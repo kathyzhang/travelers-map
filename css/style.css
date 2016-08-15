@@ -1,0 +1,65 @@
+/*textarea, input {
+  font-size: 15px;
+  font-weight: lighter;
+  border-style: solid;
+  border-color: #3CB371;
+  border-width: 1px;
+  margin: 1px;
+}*/
+input {
+  border-style: solid;
+  border-color: #000066;
+  border-width: 1px;
+  text-align: center;
+}
+
+#map {
+  height: 800px;
+}
+
+.container {
+  padding: 0px;
+}
+
+.inputArea, .resultArea, .mapArea {
+  border-style: solid;
+  border-color: #000066;
+  border-width: 1px;
+  text-align: center;
+
+}
+
+.resultItem {
+  background-color: #e6e6ff;
+}
+
+.container-fluid {
+  padding: 10px;
+  margin: 10px;
+}
+
+.btn-info {
+  background-color: #6699ff;
+}
+
+.btn span.glyphicon {
+	opacity: 0;
+}
+.btn.active span.glyphicon {
+	opacity: 1;
+}
+
+
+
+
+/*.btn-primary:hover {
+    background-color:#efE0E0;
+}
+
+.btn-primary:active {
+    background-color:#efE0E0;
+}
+
+.btn-primary:focus {
+    background-color:#efE0E0;
+}*/

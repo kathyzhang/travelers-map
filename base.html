@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Map</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A map App">
+  <!-- <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Lato'> -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="js/lib/knockout-3.4.0.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_G9M1jfplVlXowZkrok4p8Sr6om0pFmc&libraries=places&callback=initMap" async defer></script>
+
+</head>
+
+<body>
+  <div class="container-fluid">
+
+    <div class="row inputArea">
+      <div class="col-lg-12">
+        <!-- <fieldset data-role="controlgroup" data-type="horizontal">
+          <legend>What are you looking for?</legend>
+          <label>Restaurant</label>
+          <input type="checkbox" data-bind="checked:searchType" value="restaurant">
+          <label>Museum</label>
+          <input type="checkbox" data-bind="checked:searchType" value="museum">
+        </fieldset> -->
+
+        <div class="btn-group" data-toggle="buttons, checkbox">
+          <legend>What are you looking for?</legend>
+
+          <button class="btn btn-primary" data-bind="value:'restaurant', click:toggleSearchType" value="restaurant">
+            <span class="glyphicon glyphicon-ok" ></span>Restaurant
+          </button>
+
+          <button class="btn btn-primary" data-bind="value:'museum', click:toggleSearchType">
+            <span class="glyphicon glyphicon-ok"></span>Museum
+          </button>
+
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="row inputArea">
+      <div class="col-lg-12 map-col">
+        <div id="floating-panel">
+          <form data-bind="submit: updateAddressAndType">
+            <p>Enter Address:</p>
+            <input type="textbox" data-bind="value: inputAddress" value="Toronto, ON, Canada"/>
+            <button type="submit"> Get Info </button>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-3 result-col">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6 resultArea" data-bind="template: { name: 'resultsList-template', foreach: _allResultLists}"></div>
+
+      <div class="col-lg-6 mapArea">
+        <div id="map"></div>
+      </div>
+    </div>
+
+    <script type="text/html" id="resultsList-template">
+      <div class="col-lg-3">
+        <h3 data-bind="text: typeName"></h3>
+        <div data-bind="template: { name: 'resultsItem-template', foreach: resultItemList}"></div>
+      </div>
+    </script>
+
+    <script type="text/html" id="resultsItem-template">
+      <div class="resultItem">
+        <p data-bind="text: name"></p>
+      </div>
+
+    </script>
+
+
+
+  </div>
+
+
+
+
+  </body>
+  </html>
+
+
+  <script src="js/app.js"></script>
