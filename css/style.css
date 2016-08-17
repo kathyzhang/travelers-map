@@ -14,23 +14,34 @@ input {
 }
 
 #map {
-  height: 800px;
+  height: 500px;
+  /*width: 700px;*/
 }
 
 .container {
   padding: 0px;
 }
 
-.inputArea, .resultArea, .mapArea {
+.inputArea{
   border-style: solid;
   border-color: #000066;
   border-width: 1px;
   text-align: center;
+  /*background-color: #0994D6;*/
+}
 
+.resultArea, .mapArea {
+  border-style: solid;
+  border-color: #000066;
+  border-width: 1px;
+  text-align: center;
+  background-color: #ffeecc;
+  overflow: scroll;
 }
 
 .resultItem {
   background-color: #e6e6ff;
+
 }
 
 .container-fluid {
@@ -49,8 +60,100 @@ input {
 	opacity: 1;
 }
 
+.dropdown-menu, .dropdown-toggle, .dropdown {
+  width: 100%;
+  white-space: normal;
+  padding: 0px;
+  float: left;
+}
 
+.dropdown-submenu {
+    position: relative;
+}
 
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+.dropdown-menu>li>a {
+  padding: 0;
+}
+
+.weather{
+  margin-top: 5%;
+}
+
+.temperature{
+  cursor: pointer;
+}
+
+.weatherWidget {
+  background-color: #e6eeff;
+  opacity: 0.8;
+}
+.weatherWidget:hover {
+  background-color: #e6eeff;
+  opacity: 1;
+}
+
+#address-input {
+  width: 100%;
+}
+/*input[type='checkbox'] {
+    -webkit-appearance:none;
+    width:30px;
+    height:30px;
+    background:white;
+    border-radius:5px;
+    border:2px solid #555;
+}*/
+/*input[type='checkbox']:checked {
+    background: #abd;
+}*/
+
+input[type='checkbox'] {
+    font-size: 70px;
+}
 
 /*.btn-primary:hover {
     background-color:#efE0E0;
