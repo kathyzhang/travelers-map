@@ -5,7 +5,10 @@ var _geocoder;
 var infowindow;
 var _markers = [];
 var map;
-var pos;
+var _pos;
+
+var _DEGREE_CELSIUS = "\u2103";
+var _DEGREE_FAHRENHEIT = "\u2109";
 
 function geocodeAddress(placeType) {
   _geocoder.geocode({'address': _addressInput}, function(results, status) {
@@ -13,7 +16,7 @@ function geocodeAddress(placeType) {
       map.setCenter(results[0].geometry.location);
       infowindow = new google.maps.InfoWindow();
       var service = new google.maps.places.PlacesService(map);
-      pos = results[0].geometry.location.toJSON();
+      _pos = results[0].geometry.location.toJSON();
 
       service.nearbySearch({
         location: results[0].geometry.location,
@@ -50,11 +53,11 @@ function initMap() {
   // Try HTML5 geolocation.
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
-      pos = {
+      _pos = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
-      map.setCenter(pos);
+      map.setCenter(_pos);
     }, function() {
       console.log("error!kexin");
       //handleLocationError(true, infoWindow, map.getCenter());
@@ -169,9 +172,11 @@ var ViewModel = function() {
   self.inputAddress = ko.observable("Toronto, ON, Canada");
   self.searchType = ko.observableArray([]);
   self.allResultLists = _allResultLists();
-  self.searchTemperature = ko.observable();
+  self.localTempF = ko.observable();
+  self.localTempC = ko.observable();
+  self.localTempDisplay = ko.observable();
   self.description = ko.observable();
-  self.weatherIcon = ko.observable();
+  self.tempUnit;
 
   self.updateAddressAndType = function() {
     console.log(self.searchType());
@@ -182,22 +187,13 @@ var ViewModel = function() {
     _allResultLists().length = 0;
     _addressInput = self.inputAddress();
     _allSearchTypes = self.searchType();
-    var forecastUrl = "https://api.forecast.io/forecast/6bff14d01f94dbf252e20a2715e03f52/"+pos.lat+ "," + pos.lng;
 
-    $.getJSON(forecastUrl, function(data) {
-      self.searchTemperature(data.currently.temperature);
-      self.description(data.currently.icon);
-      var skycons = new Skycons({"color": "#3385ff"});
-      skycons.add("weather-icon", data.currently.icon);
-      skycons.play();
-    }).error(function(e) {
-      console.log("weather error!!");
-      console.log(e);
-    });
+    getWeather();
 
     for (var i=0; i < self.searchType().length; i++) {
       geocodeAddress(self.searchType()[i]);
     }
+
   }
 
   self.searchMap = function() {
@@ -212,6 +208,41 @@ var ViewModel = function() {
     }
   }
 };
+
+
+function getWeather() {
+  var forecastUrl = "https://api.forecast.io/forecast/6bff14d01f94dbf252e20a2715e03f52/"+_pos.lat+ "," + _pos.lng;
+
+  $.getJSON(forecastUrl, function(data) {
+    console.log(data);
+    _viewModel.localTempF(data.currently.temperature);
+    _viewModel.localTempC((_viewModel.localTempF() - 32) / 1.8);
+    _viewModel.tempUnit = _DEGREE_FAHRENHEIT;
+    _viewModel.localTempDisplay(_viewModel.localTempF().toFixed(0) + " " +  _DEGREE_FAHRENHEIT);
+    _viewModel.description(data.currently.icon);
+    var skycons = new Skycons({"color": "#3385ff"});
+    skycons.add("local-weather-icon", data.currently.icon);
+    skycons.play();
+  }).error(function(e) {
+    console.log("weather error!!");
+    console.log(e);
+  });
+}
+
+
+function FahToCelToggle() {
+  if (_viewModel.tempUnit == _DEGREE_CELSIUS) {
+    _viewModel.tempUnit = _DEGREE_FAHRENHEIT;
+    _viewModel.localTempDisplay(_viewModel.localTempF().toFixed(0) + " " + _DEGREE_FAHRENHEIT);
+  }
+  else {
+    if (_viewModel.tempUnit == _DEGREE_FAHRENHEIT) {
+      _viewModel.tempUnit = _DEGREE_CELSIUS;
+      _viewModel.localTempDisplay(_viewModel.localTempC().toFixed(0) + " " + _DEGREE_CELSIUS);
+    }
+  }
+}
+
 
 function removeAllMarkers() {
   setMapOnAllMarkers(null);
@@ -238,4 +269,5 @@ var resultsList = function(data) {
   this.resultItemList = ko.observableArray([]);
 };
 
-ko.applyBindings(new ViewModel);
+var _viewModel = new ViewModel;
+ko.applyBindings(_viewModel);

@@ -71,7 +71,7 @@
   </div>
 
   <script type="text/html" id="resultsList-template">
-    <div class="col-md-3">
+    <div class="col-md-3 col-xs-6">
       <h3 data-bind="text: typeName"></h3>
       <div data-bind="template: { name: 'resultsItem-template', foreach: resultItemList}"></div>
     </div>
@@ -109,10 +109,13 @@
 </script>
 
 <script type="text/html" id="weather-template">
-        <h4 data-bind="text: inputAddress">Loading...</h4>
-        <h4 data-bind="text: searchTemperature"></h4>
-        <canvas id="weather-icon" width="80" height="80"></canvas>
-        <p data-bind="text: description"></p>
+        <h4>Local Weather</h4>
+        <div>
+          <h4 data-bind="text: inputAddress">Loading...</h4>
+          <p data-bind="text: description"></p>
+          <h4 class="btn temperature-btn" data-bind="click: FahToCelToggle, text: localTempDisplay"></h4>
+        </div>
+        <canvas id="local-weather-icon" width="80" height="80"></canvas>
 </script>
 
 </div>

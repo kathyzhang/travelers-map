@@ -128,12 +128,23 @@ input {
 }
 
 .weatherWidget {
+  text-align: center;
   background-color: #e6eeff;
   opacity: 0.8;
 }
-.weatherWidget:hover {
+/*.weatherWidget:hover {
   background-color: #e6eeff;
   opacity: 1;
+}*/
+
+.inline {
+  display: inline-block;
+}
+
+.temperature-btn {
+  text-align: center;
+  background-color: white;
+  margin: 0;
 }
 
 #address-input {
