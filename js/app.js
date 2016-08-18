@@ -1,6 +1,6 @@
 var _allSearchTypes = [];
 var _allResultLists = ko.observableArray([]);
-var _addressInput = document.getElementById('pac-input');
+var _addressInput = ko.observable();
 var _geocoder;
 var infowindow;
 var _markers = [];
@@ -17,7 +17,6 @@ function geocodeAddress(placeType) {
       infowindow = new google.maps.InfoWindow();
       var service = new google.maps.places.PlacesService(map);
       _pos = results[0].geometry.location.toJSON();
-
       service.nearbySearch({
         location: results[0].geometry.location,
         radius: 500,
@@ -29,6 +28,7 @@ function geocodeAddress(placeType) {
       alert('Geocode was not successful for the following reason: ' + status);
     }
   });
+
 }
 
 
@@ -58,6 +58,8 @@ function initMap() {
         lng: position.coords.longitude
       };
       map.setCenter(_pos);
+
+      // init weather
     }, function() {
       console.log("error!kexin");
       //handleLocationError(true, infoWindow, map.getCenter());
@@ -99,8 +101,7 @@ function storePlaceDetails(results, placeType) {
   }
   //console.log("hours:" + item.hours);
   var index = _allResultLists.push(newResultsList) - 1;
-  console.log(newResultsList.typeName);
-
+  // console.log(newResultsList.typeName);
   //getDetialedHours(index);
 }
 
@@ -138,7 +139,7 @@ function renderResults(results, placeType) {
 
 function createMarker(place, placeType, timeout, ranking) {
   window.setTimeout(function() {
-    var placeLoc = place.geometry.location;
+    // var placeLoc = place.geometry.location;
     var image = {
       url: place.icon,
       size: new google.maps.Size(70, 70),
@@ -146,11 +147,10 @@ function createMarker(place, placeType, timeout, ranking) {
       origin: new google.maps.Point(0, 0),
       anchor: new google.maps.Point(0, 0)
     };
-    var url = 'img/'+ placeType + '.png';
 
     var marker = new google.maps.Marker({
       map: map,
-      icon: image,
+      // icon: image,
       // label: (place.rating > 0 ? String(place.rating) : "?"),
       // label: (ranking < 10 ? ranking : ""),
       position: place.geometry.location,
@@ -158,7 +158,6 @@ function createMarker(place, placeType, timeout, ranking) {
     });
 
     _markers.push(marker);
-
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.setContent(place.name);
       infowindow.open(map, this);
@@ -172,14 +171,13 @@ var ViewModel = function() {
   self.inputAddress = ko.observable("Toronto, ON, Canada");
   self.searchType = ko.observableArray([]);
   self.allResultLists = _allResultLists();
-  self.localTempF = ko.observable();
-  self.localTempC = ko.observable();
-  self.localTempDisplay = ko.observable();
-  self.description = ko.observable();
-  self.tempUnit;
+  self.skycons = new Skycons({"color": "#3385ff"});
+  self.localWeather = new weatherItem("local-weather", false);
+
+  self.pastWeather = new weatherItem("past-weather", true);
+
 
   self.updateAddressAndType = function() {
-    console.log(self.searchType());
     removeAllMarkers();
     for (var i=0 ; i<_allResultLists().length ; i++) {
       _allResultLists()[i] = null;
@@ -188,12 +186,14 @@ var ViewModel = function() {
     _addressInput = self.inputAddress();
     _allSearchTypes = self.searchType();
 
-    getWeather();
-
-    for (var i=0; i < self.searchType().length; i++) {
-      geocodeAddress(self.searchType()[i]);
+    if (self.searchType().length == 0) {
+      alert("Please choose searching types.");
     }
-
+    else {
+      for (var i=0; i < self.searchType().length; i++) {
+        geocodeAddress(self.searchType()[i]);
+      }
+    }
   }
 
   self.searchMap = function() {
@@ -207,38 +207,61 @@ var ViewModel = function() {
       searchCurrentMapArea(self.searchType()[i]);
     }
   }
+
+  self.getWeather = function(w) {
+    var forecastUrl = "https://api.forecast.io/forecast/6bff14d01f94dbf252e20a2715e03f52/"+_pos.lat+ "," + _pos.lng;
+    if (w.isTimeMachine) {
+      forecastUrl = forecastUrl + "," + w.weatherTimeMachineTime();
+      console.log(forecastUrl);
+    }
+    console.log(forecastUrl);
+
+    $.ajax({
+      url: forecastUrl,
+      dataType: 'json',
+    }).done(function(data, status, xhr){
+      w.weatherAPICalls(xhr.getResponseHeader("X-Forecast-API-Calls"));
+      w.localTempF(data.currently.temperature);
+      w.localTempC((w.localTempF() - 32) / 1.8);
+      w.tempUnit = _DEGREE_FAHRENHEIT;
+      w.localTempDisplay(w.localTempF().toFixed(0) + " " +  _DEGREE_FAHRENHEIT);
+      var description = data.currently.icon.split("-").join(" ");
+      w.description(description);
+
+      self.skycons.add(w.weatherItemId(), data.currently.icon);
+      self.skycons.play();
+      w.timezone(data.timezone);
+    }).error(function(e){
+      w.description('forecast.io weather loading error.');
+    });
+  }
+
 };
 
 
-function getWeather() {
-  var forecastUrl = "https://api.forecast.io/forecast/6bff14d01f94dbf252e20a2715e03f52/"+_pos.lat+ "," + _pos.lng;
-
-  $.getJSON(forecastUrl, function(data) {
-    console.log(data);
-    _viewModel.localTempF(data.currently.temperature);
-    _viewModel.localTempC((_viewModel.localTempF() - 32) / 1.8);
-    _viewModel.tempUnit = _DEGREE_FAHRENHEIT;
-    _viewModel.localTempDisplay(_viewModel.localTempF().toFixed(0) + " " +  _DEGREE_FAHRENHEIT);
-    _viewModel.description(data.currently.icon);
-    var skycons = new Skycons({"color": "#3385ff"});
-    skycons.add("local-weather-icon", data.currently.icon);
-    skycons.play();
-  }).error(function(e) {
-    console.log("weather error!!");
-    console.log(e);
-  });
+function animateSkycons(weather) {
+  weather.skycons.color = "#ffff99";
+  weather.skycons.pause();
+  weather.skycons.play(); // redraw canvas
+  weather.skycons.pause();
 }
 
 
-function FahToCelToggle() {
-  if (_viewModel.tempUnit == _DEGREE_CELSIUS) {
-    _viewModel.tempUnit = _DEGREE_FAHRENHEIT;
-    _viewModel.localTempDisplay(_viewModel.localTempF().toFixed(0) + " " + _DEGREE_FAHRENHEIT);
+function stopAnimateSkycons(weather) {
+  weather.skycons.play();
+  weather.skycons.color = "#3385ff";
+}
+
+
+function FahToCelToggle(weather) {
+  if (weather.tempUnit == _DEGREE_CELSIUS) {
+    weather.tempUnit = _DEGREE_FAHRENHEIT;
+    weather.localTempDisplay(weather.localTempF().toFixed(0) + " " + _DEGREE_FAHRENHEIT);
   }
   else {
-    if (_viewModel.tempUnit == _DEGREE_FAHRENHEIT) {
-      _viewModel.tempUnit = _DEGREE_CELSIUS;
-      _viewModel.localTempDisplay(_viewModel.localTempC().toFixed(0) + " " + _DEGREE_CELSIUS);
+    if (weather.tempUnit == _DEGREE_FAHRENHEIT) {
+      weather.tempUnit = _DEGREE_CELSIUS;
+      weather.localTempDisplay(weather.localTempC().toFixed(0) + " " + _DEGREE_CELSIUS);
     }
   }
 }
@@ -249,11 +272,13 @@ function removeAllMarkers() {
   _markers = [];
 }
 
+
 function setMapOnAllMarkers(map) {
   for (var i = 0; i < _markers.length; i++) {
     _markers[i].setMap(map);
   }
 }
+
 
 var placeItem = function(data) {
   this.name = ko.observable(data.name);
@@ -264,10 +289,27 @@ var placeItem = function(data) {
   this.id = "";
 };
 
+
+var weatherItem = function(id, isTimeMachine) {
+  var self = this;
+  self.localTempF = ko.observable();
+  self.localTempC = ko.observable();
+  self.localTempDisplay = ko.observable();
+  self.description = ko.observable();
+  self.weatherAPICalls = ko.observable();
+  self.tempUnit;
+  self.weatherItemId = ko.observable(id);
+  self.timezone = ko.observable("Current Location");
+  self.isTimeMachine = isTimeMachine;
+  self.weatherTimeMachineTime = ko.observable("2013-05-06T12:00:00-0400");
+}
+
+
 var resultsList = function(data) {
   this.typeName = ko.observable();
   this.resultItemList = ko.observableArray([]);
 };
+
 
 var _viewModel = new ViewModel;
 ko.applyBindings(_viewModel);

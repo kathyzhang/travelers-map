@@ -137,14 +137,25 @@ input {
   opacity: 1;
 }*/
 
-.inline {
+.inline * {
   display: inline-block;
+}
+
+.note {
+  text-align: right;
+  font-size: 70%;
 }
 
 .temperature-btn {
   text-align: center;
   background-color: white;
   margin: 0;
+}
+
+.temperature-btn:hover {
+    border-style: solid;
+    border-color: #000066;
+    border-width: 1px;
 }
 
 #address-input {

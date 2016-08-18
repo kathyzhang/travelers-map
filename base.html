@@ -28,7 +28,7 @@
         <input type="checkbox" data-bind="checked:searchType" value="museum">
         <label>Subway</label>
         <input type="checkbox" data-bind="checked:searchType" value="subway_station">
-      </fieldset>
+        </fieldset>
 
       <!-- <div class="btn-group" data-toggle="buttons checkbox">
         <legend>What are you looking for?</legend>
@@ -53,17 +53,16 @@
           <button type="submit"> Get Info </button>
         </form>
       </div>
-    </div>
-
-    <div class="col-lg-3 weatherWidget text-center" data-bind="template: { name: 'weather-template' }"></div>
-
-    <div class="col-lg-3">
       <button data-bind="click: searchMap"> Search Current Map Area </button>
     </div>
+
+    <div class="col-lg-3 weatherWidget text-center" data-bind="template: { name: 'weather-template', data:localWeather}"></div>
+    <div class="col-lg-3 weatherWidget text-center" data-bind="template: { name: 'weather-time-machine-template', data:pastWeather}"></div>
+
   </div>
 
   <div class="row">
-    <div class="col-md-6 resultArea" data-bind="template: { name: 'resultsList-template', foreach: _allResultLists}"></div>
+    <div class="col-md-6 resultArea" data-bind="template: { name: 'resultsList-template', foreach: _allResultLists}, click: getWeather"></div>
 
     <div class="col-md-6 mapArea">
       <div id="map"></div>
@@ -109,13 +108,27 @@
 </script>
 
 <script type="text/html" id="weather-template">
-        <h4>Local Weather</h4>
         <div>
-          <h4 data-bind="text: inputAddress">Loading...</h4>
+          <div class="inline">
+            <h4 >Station: </h4><h4 data-bind="text: timezone"></h4>
+          </div>
           <p data-bind="text: description"></p>
-          <h4 class="btn temperature-btn" data-bind="click: FahToCelToggle, text: localTempDisplay"></h4>
+          <h4 class=" temperature-btn" data-bind="click: FahToCelToggle, text: localTempDisplay"></h4>
         </div>
-        <canvas id="local-weather-icon" width="80" height="80"></canvas>
+        <canvas class="weather-icon" data-bind="attr: {'id': weatherItemId}, {event: mouseover: animateSkycons, mouseout: stopAnimateSkycons}" width="80" height="80"></canvas>
+        <button data-bind="click: $parent.getWeather">Get local weather!</button>
+        <div class="inline note">
+          <p >Weather call today: </p><p data-bind="text: weatherAPICalls"></p>
+        </div>
+</script>
+
+<script type="text/html" id="weather-time-machine-template">
+  <h4>Time Machine</h4>
+  <input type="textbox" data-bind="value: weatherTimeMachineTime" value="2013-05-06T12:00:00-0400" width="250"/>
+  <p data-bind="text: description"></p>
+  <h4 class=" temperature-btn" data-bind="click: FahToCelToggle, text: localTempDisplay"></h4>
+  <canvas class="weather-icon" data-bind="attr: {'id': weatherItemId}, {event: mouseover: animateSkycons, mouseout: stopAnimateSkycons}" width="80" height="80"></canvas>
+  <button data-bind="click: $parent.getWeather">Get local weather!</button>
 </script>
 
 </div>
