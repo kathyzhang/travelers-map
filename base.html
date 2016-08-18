@@ -11,7 +11,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="js/lib/knockout-3.4.0.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_G9M1jfplVlXowZkrok4p8Sr6om0pFmc&libraries=places&callback=initMap" async defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_G9M1jfplVlXowZkrok4p8Sr6om0pFmc&libraries=places,geometry&callback=initMap" async defer></script>
   <script src="js/lib/skycons.js"></script>
 </head>
 
@@ -62,7 +62,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-6 resultArea" data-bind="template: { name: 'resultsList-template', foreach: _allResultLists}, click: getWeather"></div>
+    <div class="col-md-6 resultArea" data-bind="template: { name: 'resultsList-template', foreach: _allResultLists}"></div>
 
     <div class="col-md-6 mapArea">
       <div id="map"></div>

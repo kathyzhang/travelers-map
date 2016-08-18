@@ -34,9 +34,16 @@ function geocodeAddress(placeType) {
 
 function searchCurrentMapArea(placeType) {
   var service = new google.maps.places.PlacesService(map);
+  var bounds = map.getBounds();
+  var center = map.getCenter();
+  var radius = 500;
+  if (bounds && center) {
+    var ne = bounds.getNorthEast();
+    radius = google.maps.geometry.spherical.computeDistanceBetween(center, ne);
+  }
   service.nearbySearch({
     location: map.getCenter(),
-    radius: 500,
+    radius: radius,
     type: placeType,
   }, function(results, status) {
     processResults(results, status, placeType);
@@ -74,6 +81,7 @@ function initMap() {
 
 
 function processResults(results, status, placeType) {
+  console.log(placeType + results.length);
   if (status === google.maps.places.PlacesServiceStatus.OK) {
     // TODO: Is ranking this way necessary?
     var rankedResult = results.sort(function(a, b){return b.rating-a.rating});
@@ -156,6 +164,8 @@ function createMarker(place, placeType, timeout, ranking) {
       position: place.geometry.location,
       animation: google.maps.Animation.DROP
     });
+
+    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
 
     _markers.push(marker);
     google.maps.event.addListener(marker, 'click', function() {
