@@ -173,7 +173,6 @@ var ViewModel = function() {
   self.allResultLists = _allResultLists();
   self.skycons = new Skycons({"color": "#3385ff"});
   self.localWeather = new weatherItem("local-weather", false);
-
   self.pastWeather = new weatherItem("past-weather", true);
 
 
@@ -236,21 +235,22 @@ var ViewModel = function() {
     });
   }
 
+  self.animateSkycons = function () {
+    self.skycons.color = "#ff7733";
+    self.skycons.pause();
+    self.skycons.play(); // redraw canvas
+    self.skycons.pause();
+  }
+
+  self.stopAnimateSkycons = function() {
+    self.skycons.play();
+    self.skycons.color = "#3385ff";
+  }
+
 };
 
 
-function animateSkycons(weather) {
-  weather.skycons.color = "#ffff99";
-  weather.skycons.pause();
-  weather.skycons.play(); // redraw canvas
-  weather.skycons.pause();
-}
 
-
-function stopAnimateSkycons(weather) {
-  weather.skycons.play();
-  weather.skycons.color = "#3385ff";
-}
 
 
 function FahToCelToggle(weather) {

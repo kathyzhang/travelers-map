@@ -115,7 +115,7 @@
           <p data-bind="text: description"></p>
           <h4 class=" temperature-btn" data-bind="click: FahToCelToggle, text: localTempDisplay"></h4>
         </div>
-        <canvas class="weather-icon" data-bind="attr: {'id': weatherItemId}, {event: mouseover: animateSkycons, mouseout: stopAnimateSkycons}" width="80" height="80"></canvas>
+        <canvas class="weather-icon" data-bind="attr: {'id': weatherItemId}, event: {mouseover: $parent.animateSkycons, mouseout: $parent.stopAnimateSkycons}" width="80" height="80"></canvas>
         <button data-bind="click: $parent.getWeather">Get local weather!</button>
         <div class="inline note">
           <p >Weather call today: </p><p data-bind="text: weatherAPICalls"></p>
@@ -127,7 +127,7 @@
   <input type="textbox" data-bind="value: weatherTimeMachineTime" value="2013-05-06T12:00:00-0400" width="250"/>
   <p data-bind="text: description"></p>
   <h4 class=" temperature-btn" data-bind="click: FahToCelToggle, text: localTempDisplay"></h4>
-  <canvas class="weather-icon" data-bind="attr: {'id': weatherItemId}, {event: mouseover: animateSkycons, mouseout: stopAnimateSkycons}" width="80" height="80"></canvas>
+  <canvas class="weather-icon" data-bind="attr: {'id': weatherItemId}, event: {mouseover: $parent.animateSkycons, mouseout: $parent.stopAnimateSkycons}" width="80" height="80"></canvas>
   <button data-bind="click: $parent.getWeather">Get local weather!</button>
 </script>
 
