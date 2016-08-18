@@ -211,46 +211,34 @@ var ViewModel = function() {
     var forecastUrl = "https://api.forecast.io/forecast/6bff14d01f94dbf252e20a2715e03f52/"+_pos.lat+ "," + _pos.lng;
     if (w.isTimeMachine) {
       forecastUrl = forecastUrl + "," + w.weatherTimeMachineTime();
-      console.log(forecastUrl);
     }
-    console.log(forecastUrl);
 
     $.ajax({
       url: forecastUrl,
       dataType: 'json',
     }).done(function(data, status, xhr){
-      w.weatherAPICalls(xhr.getResponseHeader("X-Forecast-API-Calls"));
-      w.localTempF(data.currently.temperature);
-      w.localTempC((w.localTempF() - 32) / 1.8);
-      w.tempUnit = _DEGREE_FAHRENHEIT;
-      w.localTempDisplay(w.localTempF().toFixed(0) + " " +  _DEGREE_FAHRENHEIT);
-      var description = data.currently.icon.split("-").join(" ");
-      w.description(description);
+      if (status === 'success') {
+        w.weatherAPICalls(xhr.getResponseHeader("X-Forecast-API-Calls"));
+        w.localTempF(data.currently.temperature);
+        w.localTempC((w.localTempF() - 32) / 1.8);
+        w.tempUnit = _DEGREE_FAHRENHEIT;
+        w.localTempDisplay(w.localTempF().toFixed(0) + " " +  _DEGREE_FAHRENHEIT);
+        var description = data.currently.icon.split("-").join(" ");
+        w.description(description);
+        w.timezone(data.timezone);
 
-      self.skycons.add(w.weatherItemId(), data.currently.icon);
-      self.skycons.play();
-      w.timezone(data.timezone);
+        self.skycons.add(w.weatherItemId(), data.currently.icon);
+        self.skycons.play();
+      }
+      else {
+        console.log(status);
+        w.description('forecast.io weather loading error.');
+      }
     }).error(function(e){
       w.description('forecast.io weather loading error.');
     });
   }
-
-  self.animateSkycons = function () {
-    self.skycons.color = "#ff7733";
-    self.skycons.pause();
-    self.skycons.play(); // redraw canvas
-    self.skycons.pause();
-  }
-
-  self.stopAnimateSkycons = function() {
-    self.skycons.play();
-    self.skycons.color = "#3385ff";
-  }
-
 };
-
-
-
 
 
 function FahToCelToggle(weather) {
@@ -264,6 +252,20 @@ function FahToCelToggle(weather) {
       weather.localTempDisplay(weather.localTempC().toFixed(0) + " " + _DEGREE_CELSIUS);
     }
   }
+}
+
+
+function animateSkycons() {
+  _viewModel.skycons.color = "#ff7733";
+  _viewModel.skycons.pause();
+  _viewModel.skycons.play(); // redraw canvas
+  _viewModel.skycons.pause();
+}
+
+
+function stopAnimateSkycons() {
+  _viewModel.skycons.play();
+  _viewModel.skycons.color = "#3385ff";
 }
 
 
