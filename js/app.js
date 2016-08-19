@@ -1,5 +1,4 @@
 var _allSearchTypes = [];
-var _allResultLists = ko.observableArray([]);
 var _addressInput = ko.observable();
 var _geocoder;
 var infowindow;
@@ -9,6 +8,7 @@ var _pos;
 
 var _DEGREE_CELSIUS = "\u2103";
 var _DEGREE_FAHRENHEIT = "\u2109";
+
 
 function geocodeAddress(placeType) {
   _geocoder.geocode({'address': _addressInput}, function(results, status) {
@@ -65,8 +65,6 @@ function initMap() {
         lng: position.coords.longitude
       };
       map.setCenter(_pos);
-
-      // init weather
     }, function() {
       console.log("error!kexin");
       //handleLocationError(true, infoWindow, map.getCenter());
@@ -86,51 +84,40 @@ function processResults(results, status, placeType) {
     // TODO: Is ranking this way necessary?
     var rankedResult = results.sort(function(a, b){return b.rating-a.rating});
     renderResults(rankedResult, placeType);
-    storePlaceDetails(rankedResult, placeType);
+    storePlaceInfo(rankedResult, placeType);
   }
 }
 
 
-function storePlaceDetails(results, placeType) {
+function storePlaceInfo(results, placeType) {
   var newResultsList = new resultsList();
   newResultsList.typeName = placeType;
 
   for (var i = 0; i < results.length; i++) {
-    var place = results[i];
-    var item = {
-      name: place.name,
-      rating: place.rating,
-      address: place.vicinity,
-      icon: place.icon,
-      id: place.place_id,
-      hours: ''
-    };
+    var item = new placeItem(results[i]);
     newResultsList.resultItemList.push(item);
   }
-  //console.log("hours:" + item.hours);
-  var index = _allResultLists.push(newResultsList) - 1;
-  // console.log(newResultsList.typeName);
+  var index = _viewModel.allResultLists.push(newResultsList) - 1;
   //getDetialedHours(index);
 }
 
 
-function getDetialedHours(index) {
-  var results = _allResultLists()[index].resultItemList();
+function requestPlaceDetials(placeObserverble) {
   var service = new google.maps.places.PlacesService(map);
-  for (var i = 0; i < results.length; i++) {
-    var place = results[i];
-    var request = { reference: place.id };
-    // Because many places don't have Google Map getDetials service.
-    // Choose to use places' common information except hours.
-    service.getDetails(request, function(placeDetails, status) {
-      console.log(status);
-      if (status === google.maps.places.PlacesServiceStatus.OK) {
-        for (var i = 0; i < results.length; i++) {
-          _allResultLists()[index].resultItemList[i].hours = placeDetails.opening_hours.weekday_text;
-        }
-      }
-    });
-  }
+  var request = { placeId: placeObserverble.id() };
+  // Because many places don't have Google Map getDetials service.
+  // Choose to use places' common information except hours.
+  service.getDetails(request, function(placeDetails, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      var hours = placeDetails.opening_hours.weekday_text;
+      var website = placeDetails.website;
+      placeObserverble.hours(hours);
+      placeObserverble.website(website);
+    }
+    else {
+      placeObserverble.hours("Place details unknown");
+    }
+  });
 }
 
 
@@ -180,7 +167,7 @@ var ViewModel = function() {
   var self = this;
   self.inputAddress = ko.observable("Toronto, ON, Canada");
   self.searchType = ko.observableArray([]);
-  self.allResultLists = _allResultLists();
+  self.allResultLists = ko.observableArray([]);
   self.skycons = new Skycons({"color": "#3385ff"});
   self.localWeather = new weatherItem("local-weather", false);
   self.pastWeather = new weatherItem("past-weather", true);
@@ -188,10 +175,10 @@ var ViewModel = function() {
 
   self.updateAddressAndType = function() {
     removeAllMarkers();
-    for (var i=0 ; i<_allResultLists().length ; i++) {
-      _allResultLists()[i] = null;
-    }
-    _allResultLists().length = 0;
+    // for (var i=0 ; i<self.allResultLists().length ; i++) {
+    //   self.allResultLists()[i] = null;
+    // }
+    self.allResultLists().length = 0;
     _addressInput = self.inputAddress();
     _allSearchTypes = self.searchType();
 
@@ -207,10 +194,10 @@ var ViewModel = function() {
 
   self.searchMap = function() {
     removeAllMarkers();
-    for (var i=0 ; i<_allResultLists().length ; i++) {
-      _allResultLists()[i] = null;
+    for (var i=0 ; i<self.allResultLists().length ; i++) {
+      self.allResultLists()[i] = null;
     }
-    _allResultLists().length = 0;
+    self.allResultLists().length = 0;
 
     for (var i=0; i < self.searchType().length; i++) {
       searchCurrentMapArea(self.searchType()[i]);
@@ -248,7 +235,16 @@ var ViewModel = function() {
       w.description('forecast.io weather loading error.');
     });
   }
+
+
 };
+
+
+function getPlaceDetials(p) {
+  if (p.hours() === undefined) {
+    requestPlaceDetials(p);
+  }
+}
 
 
 function FahToCelToggle(weather) {
@@ -295,10 +291,12 @@ function setMapOnAllMarkers(map) {
 var placeItem = function(data) {
   this.name = ko.observable(data.name);
   this.rating = ko.observable(data.rating);
-  this.address = ko.observable(data.address);
+  this.address = ko.observable(data.vicinity);
   this.hours = ko.observable(data.hours);
   this.icon = ko.observable(data.icon);
-  this.id = "";
+  this.id = ko.observable(data.place_id)
+  this.geometry = ko.observable(data.geometry);
+  this.website = ko.observable(data.website);
 };
 
 

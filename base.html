@@ -62,7 +62,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-6 resultArea" data-bind="template: { name: 'resultsList-template', foreach: _allResultLists}"></div>
+    <div class="col-md-6 resultArea" data-bind="template: { name: 'resultsList-template', foreach: allResultLists}"></div>
 
     <div class="col-md-6 mapArea">
       <div id="map"></div>
@@ -88,10 +88,8 @@
     <button class="btn btn-default btn-s dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       <span>
         <img src="" alt="icon" data-bind="attr:{src:icon}" height="15" width="15">
-        <span data-bind="text: name"></span>
+        <span data-bind="text: name, event: {mouseover:getPlaceDetials}"></span>
       </span>
-
-
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
       <li class="dropdown-submenu">
@@ -102,7 +100,7 @@
       </li>
       <li data-bind="text: address"></li>
       <li role="separator" class="divider"></li>
-      <li><a href="#">Separated link</a></li>
+      <li><a data-bind="attr:{href: website}">website</a></li>
     </ul>
   </div>
 </script>
