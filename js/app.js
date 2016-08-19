@@ -108,14 +108,14 @@ function requestPlaceDetials(placeObserverble) {
   // Because many places don't have Google Map getDetials service.
   // Choose to use places' common information except hours.
   service.getDetails(request, function(placeDetails, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
+    if (status !== google.maps.places.PlacesServiceStatus.OK || placeDetails.opening_hours === undefined) {
+      placeObserverble.hours("Place details unknown");
+    }
+    else {
       var hours = placeDetails.opening_hours.weekday_text;
       var website = placeDetails.website;
       placeObserverble.hours(hours);
       placeObserverble.website(website);
-    }
-    else {
-      placeObserverble.hours("Place details unknown");
     }
   });
 }
