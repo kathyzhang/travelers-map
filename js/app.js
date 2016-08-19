@@ -65,6 +65,7 @@ function initMap() {
         lng: position.coords.longitude
       };
       map.setCenter(_pos);
+      _viewModel.getWeather(_viewModel.localWeather);
     }, function() {
       console.log("error!kexin");
       //handleLocationError(true, infoWindow, map.getCenter());
@@ -75,6 +76,7 @@ function initMap() {
     //handleLocationError(true, infoWindow, map.getCenter());
   }
   _geocoder = new google.maps.Geocoder();
+
 }
 
 
@@ -97,19 +99,19 @@ function storePlaceInfo(results, placeType) {
     var item = new placeItem(results[i]);
     newResultsList.resultItemList.push(item);
   }
-  var index = _viewModel.allResultLists.push(newResultsList) - 1;
-  //getDetialedHours(index);
+  _viewModel.allResultLists.push(newResultsList);
 }
 
 
 function requestPlaceDetials(placeObserverble) {
+  placeObserverble.hours("loading...");
   var service = new google.maps.places.PlacesService(map);
   var request = { placeId: placeObserverble.id() };
   // Because many places don't have Google Map getDetials service.
   // Choose to use places' common information except hours.
   service.getDetails(request, function(placeDetails, status) {
     if (status !== google.maps.places.PlacesServiceStatus.OK || placeDetails.opening_hours === undefined) {
-      placeObserverble.hours("Place details unknown");
+      placeObserverble.hours("Place detail unknown");
     }
     else {
       var hours = placeDetails.opening_hours.weekday_text;
@@ -171,7 +173,7 @@ var ViewModel = function() {
   self.skycons = new Skycons({"color": "#3385ff"});
   self.localWeather = new weatherItem("local-weather", false);
   self.pastWeather = new weatherItem("past-weather", true);
-
+  self.locationPair = ko.observableArray([]);
 
   self.updateAddressAndType = function() {
     removeAllMarkers();
@@ -190,6 +192,8 @@ var ViewModel = function() {
         geocodeAddress(self.searchType()[i]);
       }
     }
+
+
   }
 
   self.searchMap = function() {
@@ -212,10 +216,11 @@ var ViewModel = function() {
 
     $.ajax({
       url: forecastUrl,
-      dataType: 'json',
+      dataType: 'jsonp',
     }).done(function(data, status, xhr){
       if (status === 'success') {
         w.weatherAPICalls(xhr.getResponseHeader("X-Forecast-API-Calls"));
+        console.log(w.weatherAPICalls());
         w.localTempF(data.currently.temperature);
         w.localTempC((w.localTempF() - 32) / 1.8);
         w.tempUnit = _DEGREE_FAHRENHEIT;
@@ -232,10 +237,10 @@ var ViewModel = function() {
         w.description('forecast.io weather loading error.');
       }
     }).error(function(e){
+      console.log(status);
       w.description('forecast.io weather loading error.');
     });
   }
-
 
 };
 
