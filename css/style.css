@@ -189,6 +189,21 @@ input[type='checkbox'] {
   text-transform: capitalize;
 }
 
+.glyphicon.xlarger {
+  font-size: 200%;
+}
+
+.glyphicon.larger {
+  font-size: 150%;
+}
+
+.red {
+  color: red;
+}
+
+.orange {
+  color: orange;
+}
 
 
 

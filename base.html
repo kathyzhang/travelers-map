@@ -20,15 +20,24 @@
 
     <div class="row inputArea">
       <div class="col-lg-6">
-        <i class="glyphicon glyphicon-globe"></i>
-        <h3 >Traveler's Map</h3>
-        <fieldset data-role="controlgroup" data-type="horizontal">
-          <label class="glyphicon glyphicon-cutlery" >Restaurant</label>
+        <span class="inline">
+        <span class="glyphicon glyphicon-globe xlarger" aria-hidden="true"></span>
+        <h2>Traveler's Map</h2>
+        </span>
+        <hr />
+        <fieldset data-role="controlgroup">
+          <span class="inline">
+          <span class="glyphicon glyphicon-cutlery larger" aria-hidden="true">Restaurant</span>
           <input type="checkbox" data-bind="checked:searchType" value="restaurant">
-          <label class="glyphicon glyphicon-home">Museum</label>
+          </span>
+          <span class="inline">
+          <span class="glyphicon glyphicon-home larger" aria-hidden="true">Museum</span>
           <input type="checkbox" data-bind="checked:searchType" value="museum">
-          <label class="glyphicon glyphicon-bed">Subway</label>
+          </span>
+          <span class="inline">
+          <span class="glyphicon glyphicon-bed larger" aria-hidden="true">Subway</span>
           <input type="checkbox" data-bind="checked:searchType" value="subway_station">
+          </span>
         </fieldset>
 
         <!-- <div class="btn-group" data-toggle="buttons checkbox">
@@ -51,10 +60,10 @@
   <form data-bind="submit: updateAddressAndType">
     <p>Enter Address:</p>
     <input id="pac-input" type="textbox" data-bind="value: inputAddress" value="Toronto, ON, Canada" width="250"/>
-    <button class="glyphicon glyphicon-send  btn-primary" type="submit"> Get Info </button>
+    <button class="btn-primary" type="submit"> <span class="glyphicon glyphicon-send larger" aria-hidden="true"></span> Get Info </button>
   </form>
 </div>
-<button class="glyphicon glyphicon-search btn-info" data-bind="click: searchMap"> Search Current Map Area </button>
+<button class="btn-info" data-bind="click: searchMap"> <span class="glyphicon glyphicon-search larger" aria-hidden="true"></span>Search Current Map Area </button>
 </div>
 
 <div class="col-lg-3 weatherWidget text-center" data-bind="template: { name: 'weather-template', data:localWeather}"></div>
@@ -63,7 +72,7 @@
 </div>
 
 <div class="row">
-  <h4 class = "glyphicon glyphicon-pushpin">Places Selected</h4>
+  <h4><span class = "glyphicon glyphicon-pushpin red" aria-hidden="true"></span>Places Selected</h4>
   <div data-bind="with: placeSelected1">
     <button data-bind="text: name"></button>
   </div>
@@ -84,7 +93,7 @@
 
 
 <script type="text/html" id="resultsList-template">
-  <div class="col-md-6 col-xs-6">
+  <div class="col-md-3 col-xs-6">
     <h3 class="capitalize" data-bind="text: typeName"></h3>
     <div data-bind="template: { name: 'resultsItem-template', foreach: resultItemList}"></div>
   </div>
@@ -115,13 +124,14 @@
 <script type="text/html" id="weather-template">
   <div>
     <div class="inline">
-      <h4 class="glyphicon glyphicon-info-sign">Weather Station:  </h4><h4 data-bind="text: timezone"></h4>
+      <h4><span class = "glyphicon glyphicon-info-sign orange" aria-hidden="true"></span> Weather Station:</h4>
+      <h4 data-bind="text: timezone"></h4>
     </div>
     <p data-bind="text: description"></p>
     <h4 class=" temperature-btn" data-bind="click: FahToCelToggle, text: localTempDisplay"></h4>
   </div>
   <canvas class="weather-icon" data-bind="attr: {'id': weatherItemId}, event: {mouseover: animateSkycons, mouseout: stopAnimateSkycons}" width="80" height="80"></canvas>
-  <button class="btn-info glyphicon glyphicon-search" data-bind="click: $parent.getWeather">Current local weather!</button>
+  <button class="btn-info" data-bind="click: $parent.getWeather"><span class = "glyphicon glyphicon-search" aria-hidden="true"></span>Current local weather!</button>
   <div class="inline note">
     <p>
       Data Source:The Dark Sky Forecast API.
@@ -131,12 +141,12 @@
 </script>
 
 <script type="text/html" id="weather-time-machine-template">
-  <h4 class="glyphicon glyphicon-time">Time Machine</h4>
+  <h4><span class = "glyphicon glyphicon-plane" aria-hidden="true"></span>Time Machine</h4>
   <input type="textbox" data-bind="value: weatherTimeMachineTime" value="2013-05-06T12:00:00-0400" width="250"/>
   <p data-bind="text: description"></p>
   <h4 class=" temperature-btn" data-bind="click: FahToCelToggle, text: localTempDisplay"></h4>
   <canvas class="weather-icon" data-bind="attr: {'id': weatherItemId}, event: {mouseover: animateSkycons, mouseout: stopAnimateSkycons}" width="80" height="80"></canvas>
-  <button class="btn-info glyphicon glyphicon-repeat" data-bind="click: $parent.getWeather">Time machine local weather!</button>
+  <button class="btn-info" data-bind="click: $parent.getWeather"><span class = "glyphicon glyphicon-search" aria-hidden="true"></span>Past local weather!</button>
 </script>
 
 
