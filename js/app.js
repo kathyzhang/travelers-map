@@ -173,7 +173,9 @@ var ViewModel = function() {
   self.skycons = new Skycons({"color": "#3385ff"});
   self.localWeather = new weatherItem("local-weather", false);
   self.pastWeather = new weatherItem("past-weather", true);
-  self.locationPair = ko.observableArray([]);
+  self.placeSelected1 = ko.observable();
+  self.placeSelected2 = ko.observable();
+  self.routeResult = ko.observable();
 
   self.updateAddressAndType = function() {
     removeAllMarkers();
@@ -242,6 +244,23 @@ var ViewModel = function() {
     });
   }
 
+  self.getRoute = function() {
+    if (self.placeSelected1() && self.placeSelected2()) {
+      var routeUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=place_id:"+ self.placeSelected1().id() + "&destination=place_id:" + self.placeSelected2().id() + "&mode=walking&key=AIzaSyC_G9M1jfplVlXowZkrok4p8Sr6om0pFmc";
+
+      $.getJSON(routeUrl, function(data) {
+        var route = "Distance: " + data.routes[0].legs[0].distance.text + " Duration: " + data.routes[0].legs[0].duration.text;
+        self.routeResult(route);
+        console.log(data);
+      }).error(function(e) {
+        self.routeResult("Sorry unable to get route.");
+        console.log("route error");
+      });
+    }
+    else {
+      self.routeResult("Choose two places.");
+    }
+  }
 };
 
 
@@ -290,6 +309,18 @@ function setMapOnAllMarkers(map) {
   for (var i = 0; i < _markers.length; i++) {
     _markers[i].setMap(map);
   }
+}
+
+
+function selectPlace(p) {
+  if (_viewModel.placeSelected2()) {
+    _viewModel.placeSelected1(_viewModel.placeSelected2());
+    _viewModel.placeSelected2(p);
+  }
+  else {
+    _viewModel.placeSelected2(p);
+  }
+
 }
 
 
