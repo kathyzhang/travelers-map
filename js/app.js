@@ -164,6 +164,40 @@ function createMarker(place, placeType, timeout, ranking) {
   }, timeout);
 }
 
+function openSearch() {
+  $("#searchSidenav")[0].style.width = "100%";
+}
+
+function closeSearch() {
+  $("#searchSidenav")[0].style.width = "0";
+}
+
+function openResults() {
+  $("#resultSidenav")[0].style.width = "100%";
+}
+
+function closeResults() {
+  $("#resultSidenav")[0].style.width = "0";
+}
+
+function openWeather() {
+  $("#weatherSidenav")[0].style.width = "100%";
+}
+
+function closeWeather() {
+  $("#weatherSidenav")[0].style.width = "0";
+}
+
+function openWalkTime() {
+  $("#walkSidenav")[0].style.width = "100%";
+}
+
+function closeWalkTime() {
+  $("#walkSidenav")[0].style.width = "0";
+}
+
+
+
 
 var ViewModel = function() {
   var self = this;

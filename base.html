@@ -13,90 +13,130 @@
   <script src="js/lib/knockout-3.4.0.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_G9M1jfplVlXowZkrok4p8Sr6om0pFmc&libraries=places,geometry&callback=initMap" async defer></script>
   <script src="js/lib/skycons.js"></script>
+
+
 </head>
 
 <body>
   <div class="container-fluid">
 
     <div class="row inputArea">
-      <div class="col-lg-6">
+      <div>
         <span class="inline">
-        <span class="glyphicon glyphicon-globe xlarger" aria-hidden="true"></span>
-        <h2>Traveler's Map</h2>
+          <span class="glyphicon glyphicon-globe xlarger" aria-hidden="true"></span>
+          <h2>Traveler's Map</h2>
         </span>
-        <hr />
-        <fieldset data-role="controlgroup">
+        <!-- <fieldset data-role="controlgroup">
           <span class="inline">
-          <span class="glyphicon glyphicon-cutlery larger" aria-hidden="true">Restaurant</span>
-          <input type="checkbox" data-bind="checked:searchType" value="restaurant">
+            <span class="glyphicon glyphicon-cutlery larger" aria-hidden="true">Restaurant</span>
+            <input type="checkbox" data-bind="checked:searchType" value="restaurant">
           </span>
           <span class="inline">
-          <span class="glyphicon glyphicon-home larger" aria-hidden="true">Museum</span>
-          <input type="checkbox" data-bind="checked:searchType" value="museum">
+            <span class="glyphicon glyphicon-home larger" aria-hidden="true">Museum</span>
+            <input type="checkbox" data-bind="checked:searchType" value="museum">
           </span>
           <span class="inline">
-          <span class="glyphicon glyphicon-bed larger" aria-hidden="true">Subway</span>
-          <input type="checkbox" data-bind="checked:searchType" value="subway_station">
+            <span class="glyphicon glyphicon-bed larger" aria-hidden="true">Subway</span>
+            <input type="checkbox" data-bind="checked:searchType" value="subway_station">
           </span>
         </fieldset>
 
-        <!-- <div class="btn-group" data-toggle="buttons checkbox">
-        <legend>What are you looking for?</legend>
+        <br />
+        <div id="floating-panel">
+          <form data-bind="submit: updateAddressAndType">
+            <p>Enter Address:</p>
+            <input id="pac-input" type="textbox" data-bind="value: inputAddress" value="Toronto, ON, Canada" width="250"/>
+            <button class="btn-primary" type="submit"> <span class="glyphicon glyphicon-send larger" aria-hidden="true"></span> Get Info </button>
+          </form>
+        </div>
+        <button class="btn-info" data-bind="click: searchMap"> <span class="glyphicon glyphicon-search larger" aria-hidden="true"></span>Search Current Map Area </button> -->
+      </div>
+    </div>
 
-        <button class="btn btn-primary" data-bind="value:'restaurant', click:toggleSearchType">
-        <span class="glyphicon glyphicon-ok"></span>Restaurant
-      </button>
+    <!-- Search -->
+    <div id="searchSidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeSearch()">&times;</a>
+      <fieldset data-role="controlgroup">
+        <span class="inline">
+          <span class="glyphicon glyphicon-cutlery larger" aria-hidden="true">Restaurant</span>
+          <input type="checkbox" data-bind="checked:searchType" value="restaurant">
+        </span>
+        <span class="inline">
+          <span class="glyphicon glyphicon-home larger" aria-hidden="true">Museum</span>
+          <input type="checkbox" data-bind="checked:searchType" value="museum">
+        </span>
+        <span class="inline">
+          <span class="glyphicon glyphicon-bed larger" aria-hidden="true">Subway</span>
+          <input type="checkbox" data-bind="checked:searchType" value="subway_station">
+        </span>
+      </fieldset>
+      <br />
+      <div id="floating-panel">
+        <form data-bind="submit: updateAddressAndType">
+          <p>Enter Address:</p>
+          <input id="pac-input" type="textbox" data-bind="value: inputAddress" value="Toronto, ON, Canada" width="250"/>
+          <button class="btn-primary" type="submit"> <span class="glyphicon glyphicon-send larger" aria-hidden="true"></span> Get Info </button>
+        </form>
+      </div>
+      <button class="btn-info" data-bind="click: searchMap"> <span class="glyphicon glyphicon-search larger" aria-hidden="true"></span>Search Current Map Area </button>
+    </div>
 
-      <button class="btn btn-primary" data-bind="value:'museum', click:toggleSearchType">
-      <span class="glyphicon glyphicon-ok"></span>Museum
-    </button>
+    <!-- Search Results -->
+    <div id="resultSidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeResults()">&times;</a>
+      <div class="resultArea" data-bind="template: { name: 'resultsList-template', foreach: allResultLists}"></div>
+    </div>
+    <!-- Weather -->
+    <div id="weatherSidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeWeather()">&times;</a>
+      <div class="weatherWidget text-center" data-bind="template: { name: 'weather-template', data:localWeather}"></div>
+      <div class="weatherWidget text-center" data-bind="template: { name: 'weather-time-machine-template', data:pastWeather}"></div>
+    </div>
+    <!-- walking time -->
+    <div id="walkSidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeWalkTime()">&times;</a>
+      <div>
+        <h4><span class = "glyphicon glyphicon-pushpin red" aria-hidden="true"></span>Places Selected</h4>
+        <div data-bind="with: placeSelected1">
+          <button data-bind="text: name"></button>
+        </div>
+        <div data-bind="with: placeSelected2">
+          <button data-bind="text: name"></button>
+        </div>
+        <h4 data-bind="text: routeResult"></h4>
+        <button class="btn-warning" data-bind="click: getRoute">Walking Time</button>
+      </div>
+    </div>
 
-    <button class="btn btn-primary" data-bind="value:'subway_station', click:toggleSearchType">
-    <span class="glyphicon glyphicon-ok"></span>Subway
-  </button>
-</div> -->
-<br />
-<div id="floating-panel">
-  <form data-bind="submit: updateAddressAndType">
-    <p>Enter Address:</p>
-    <input id="pac-input" type="textbox" data-bind="value: inputAddress" value="Toronto, ON, Canada" width="250"/>
-    <button class="btn-primary" type="submit"> <span class="glyphicon glyphicon-send larger" aria-hidden="true"></span> Get Info </button>
-  </form>
-</div>
-<button class="btn-info" data-bind="click: searchMap"> <span class="glyphicon glyphicon-search larger" aria-hidden="true"></span>Search Current Map Area </button>
-</div>
-
-<div class="col-lg-3 weatherWidget text-center" data-bind="template: { name: 'weather-template', data:localWeather}"></div>
-<div class="col-lg-3 weatherWidget text-center" data-bind="template: { name: 'weather-time-machine-template', data:pastWeather}"></div>
-
+<div class="row">
+    <div class="col-xs-3  btn-sm btn-primary navMenuItem" style="cursor:pointer" onclick="openSearch()">
+      <span >Search</span>
+      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+    </div>
+    <div class="col-xs-3 btn-sm btn-primary navMenuItem" style="cursor:pointer" onclick="openResults()">
+      <span>Results</span>
+      <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+    </div>
+    <div class="col-xs-3 btn-sm btn-primary navMenuItem" style="cursor:pointer" onclick="openWeather()">
+      <span>Weather</span>
+      <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
+    </div>
+    <div class="col-xs-3 btn-sm btn-primary navMenuItem" style="cursor:pointer" onclick="openWalkTime()">
+      <span>Walking</span>
+      <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+    </div>
 </div>
 
 <div class="row">
-  <h4><span class = "glyphicon glyphicon-pushpin red" aria-hidden="true"></span>Places Selected</h4>
-  <div data-bind="with: placeSelected1">
-    <button data-bind="text: name"></button>
-  </div>
-  <div data-bind="with: placeSelected2">
-    <button data-bind="text: name"></button>
-  </div>
-  <h4 data-bind="text: routeResult"></h4>
-  <button class="btn-warning" data-bind="click: getRoute">Walking Time</button>
-</div>
-
-<div class="row">
-  <div class="col-md-6 resultArea" data-bind="template: { name: 'resultsList-template', foreach: allResultLists}"></div>
-
-  <div class="col-md-6 mapArea">
+  <div class="mapArea">
     <div id="map"></div>
   </div>
 </div>
 
 
 <script type="text/html" id="resultsList-template">
-  <div class="col-md-3 col-xs-6">
-    <h3 class="capitalize" data-bind="text: typeName"></h3>
-    <div data-bind="template: { name: 'resultsItem-template', foreach: resultItemList}"></div>
-  </div>
+  <h3 class="capitalize" data-bind="text: typeName"></h3>
+  <div data-bind="template: { name: 'resultsItem-template', foreach: resultItemList}"></div>
 </script>
 
 <script type="text/html" id="resultsItem-template">
@@ -130,7 +170,10 @@
     <p data-bind="text: description"></p>
     <h4 class=" temperature-btn" data-bind="click: FahToCelToggle, text: localTempDisplay"></h4>
   </div>
-  <canvas class="weather-icon" data-bind="attr: {'id': weatherItemId}, event: {mouseover: animateSkycons, mouseout: stopAnimateSkycons}" width="80" height="80"></canvas>
+  <div>
+    <canvas class="weather-icon" data-bind="attr: {'id': weatherItemId}, event: {mouseover: animateSkycons, mouseout: stopAnimateSkycons}" width="50" height="50"></canvas>
+  </div>
+
   <button class="btn-info" data-bind="click: $parent.getWeather"><span class = "glyphicon glyphicon-search" aria-hidden="true"></span>Current local weather!</button>
   <div class="inline note">
     <p>
