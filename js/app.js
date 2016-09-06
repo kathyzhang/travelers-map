@@ -165,35 +165,35 @@ function createMarker(place, placeType, timeout, ranking) {
 }
 
 function openSearch() {
-  $("#searchSidenav")[0].style.width = "100%";
+  _viewModel.openSearchWindow(true);
 }
 
 function closeSearch() {
-  $("#searchSidenav")[0].style.width = "0";
+  _viewModel.openSearchWindow(false);
 }
 
 function openResults() {
-  $("#resultSidenav")[0].style.width = "100%";
+  _viewModel.openResultWindow(true);
 }
 
 function closeResults() {
-  $("#resultSidenav")[0].style.width = "0";
+  _viewModel.openResultWindow(false);
 }
 
 function openWeather() {
-  $("#weatherSidenav")[0].style.width = "100%";
+  _viewModel.openWeatherWindow(true);
 }
 
 function closeWeather() {
-  $("#weatherSidenav")[0].style.width = "0";
+  _viewModel.openWeatherWindow(false);
 }
 
 function openWalkTime() {
-  $("#walkSidenav")[0].style.width = "100%";
+  _viewModel.openTimeWindow(true);
 }
 
 function closeWalkTime() {
-  $("#walkSidenav")[0].style.width = "0";
+  _viewModel.openTimeWindow(false);
 }
 
 
@@ -210,6 +210,10 @@ var ViewModel = function() {
   self.placeSelected1 = ko.observable();
   self.placeSelected2 = ko.observable();
   self.routeResult = ko.observable();
+  self.openSearchWindow = ko.observable(false);
+  self.openResultWindow = ko.observable(false);
+  self.openWeatherWindow = ko.observable(false);
+  self.openTimeWindow = ko.observable(false);
 
   self.updateAddressAndType = function() {
     removeAllMarkers();

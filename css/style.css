@@ -255,6 +255,7 @@ input[type='checkbox'] {
 .navMenuItem {
   text-align: center;
   padding: 0;
+  cursor:pointer;
 }
 
 

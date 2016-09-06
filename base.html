@@ -54,7 +54,7 @@
     </div>
 
     <!-- Search -->
-    <div id="searchSidenav" class="sidenav">
+    <div id="searchSidenav" class="sidenav" data-bind="style: { width: openSearchWindow() ? '100%' : '0' }">
       <a href="javascript:void(0)" class="closebtn" onclick="closeSearch()">&times;</a>
       <fieldset data-role="controlgroup">
         <span class="inline">
@@ -82,18 +82,18 @@
     </div>
 
     <!-- Search Results -->
-    <div id="resultSidenav" class="sidenav">
+    <div id="resultSidenav" class="sidenav" data-bind="style: { width: openResultWindow() ? '100%' : '0' }">
       <a href="javascript:void(0)" class="closebtn" onclick="closeResults()">&times;</a>
       <div class="resultArea" data-bind="template: { name: 'resultsList-template', foreach: allResultLists}"></div>
     </div>
     <!-- Weather -->
-    <div id="weatherSidenav" class="sidenav">
+    <div id="weatherSidenav" class="sidenav" data-bind="style: { width: openWeatherWindow() ? '100%' : '0' }">
       <a href="javascript:void(0)" class="closebtn" onclick="closeWeather()">&times;</a>
       <div class="weatherWidget text-center" data-bind="template: { name: 'weather-template', data:localWeather}"></div>
       <div class="weatherWidget text-center" data-bind="template: { name: 'weather-time-machine-template', data:pastWeather}"></div>
     </div>
     <!-- walking time -->
-    <div id="walkSidenav" class="sidenav">
+    <div id="walkSidenav" class="sidenav" data-bind="style: { width: openTimeWindow() ? '100%' : '0' }">
       <a href="javascript:void(0)" class="closebtn" onclick="closeWalkTime()">&times;</a>
       <div>
         <h4><span class = "glyphicon glyphicon-pushpin red" aria-hidden="true"></span>Places Selected</h4>
@@ -109,19 +109,19 @@
     </div>
 
 <div class="row">
-    <div class="col-xs-3  btn-sm btn-primary navMenuItem" style="cursor:pointer" onclick="openSearch()">
+    <div class="col-xs-3  btn-sm btn-primary navMenuItem" onclick="openSearch()">
       <span >Search</span>
       <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
     </div>
-    <div class="col-xs-3 btn-sm btn-primary navMenuItem" style="cursor:pointer" onclick="openResults()">
+    <div class="col-xs-3 btn-sm btn-primary navMenuItem" onclick="openResults()">
       <span>Results</span>
       <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
     </div>
-    <div class="col-xs-3 btn-sm btn-primary navMenuItem" style="cursor:pointer" onclick="openWeather()">
+    <div class="col-xs-3 btn-sm btn-primary navMenuItem" onclick="openWeather()">
       <span>Weather</span>
       <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
     </div>
-    <div class="col-xs-3 btn-sm btn-primary navMenuItem" style="cursor:pointer" onclick="openWalkTime()">
+    <div class="col-xs-3 btn-sm btn-primary navMenuItem" onclick="openWalkTime()">
       <span>Walking</span>
       <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
     </div>
