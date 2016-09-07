@@ -77,6 +77,7 @@ function initMap() {
   }
   _geocoder = new google.maps.Geocoder();
 
+  _viewModel.updateAddressAndType();
 }
 
 
@@ -86,20 +87,7 @@ function processResults(results, status, placeType) {
     // TODO: Is ranking this way necessary?
     var rankedResult = results.sort(function(a, b){return b.rating-a.rating});
     renderResults(rankedResult, placeType);
-    storePlaceInfo(rankedResult, placeType);
   }
-}
-
-
-function storePlaceInfo(results, placeType) {
-  var newResultsList = new resultsList();
-  newResultsList.typeName = placeType;
-
-  for (var i = 0; i < results.length; i++) {
-    var item = new placeItem(results[i]);
-    newResultsList.resultItemList.push(item);
-  }
-  _viewModel.allResultLists.push(newResultsList);
 }
 
 
@@ -124,45 +112,94 @@ function requestPlaceDetials(placeObserverble) {
 
 
 function renderResults(results, placeType) {
+  var newResultsList = new resultsList();
+  newResultsList.typeName = placeType;
+
   for (var i = 0; i < results.length; i++) {
-    createMarker(results[i], placeType, i*100, String(i+1));
+    var index = createMarker(results[i], placeType, i*100, String(i+1));
+    var item = new placeItem(results[i]);
+    item.markerIndex(index);
+    newResultsList.resultItemList.push(item);
     // TODO: Enable more search result rendering
-    if (i > 7) {
-      break;
-    }
+    // if (i > 7) {
+    //   break;
+    // }
   }
+  _viewModel.allResultLists.push(newResultsList);
 }
 
 
 function createMarker(place, placeType, timeout, ranking) {
-  window.setTimeout(function() {
-    // var placeLoc = place.geometry.location;
-    var image = {
-      url: place.icon,
-      size: new google.maps.Size(70, 70),
-      scaledSize: new google.maps.Size(20, 20),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(0, 0)
-    };
+  var marker;
+  var index;
 
-    var marker = new google.maps.Marker({
-      map: map,
-      // icon: image,
-      // label: (place.rating > 0 ? String(place.rating) : "?"),
-      // label: (ranking < 10 ? ranking : ""),
-      position: place.geometry.location,
-      animation: google.maps.Animation.DROP
-    });
+  // var placeLoc = place.geometry.location;
+  var image = {
+    url: place.icon,
+    size: new google.maps.Size(70, 70),
+    scaledSize: new google.maps.Size(20, 20),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(0, 0)
+  };
 
-    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+  marker = new google.maps.Marker({
+    map: map,
+    // icon: image,
+    // label: (place.rating > 0 ? String(place.rating) : "?"),
+    // label: (ranking < 10 ? ranking : ""),
+    position: place.geometry.location,
+    animation: google.maps.Animation.DROP
+  });
 
-    _markers.push(marker);
-    google.maps.event.addListener(marker, 'click', function() {
-      infowindow.setContent(place.name);
-      infowindow.open(map, this);
-    });
-  }, timeout);
+  marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+
+  index = _markers.push(marker)-1;
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
+  });
+
+  return index;
 }
+
+
+function listItemClicked(place) {
+  selectPlace(place);
+  openInfoWindow(place);
+}
+
+
+function openInfoWindow(place) {
+  console.log("in openInfoWindow");
+  toggleBounce(place.markerIndex());
+  infowindow.setContent(place.name());
+}
+
+
+function toggleBounce(markerIndex) {
+  var marker = _markers[markerIndex];
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function(){
+      marker.setAnimation(null);
+    }, 750);
+  }
+  infowindow.open(map, marker);
+}
+
+
+function selectPlace(p) {
+  if (_viewModel.placeSelected2()) {
+    _viewModel.placeSelected1(_viewModel.placeSelected2());
+    _viewModel.placeSelected2(p);
+  }
+  else {
+    _viewModel.placeSelected2(p);
+  }
+}
+
 
 function openSearch() {
   _viewModel.openSearchWindow(true);
@@ -192,7 +229,7 @@ function closeWeather() {
 var ViewModel = function() {
   var self = this;
   self.inputAddress = ko.observable("Toronto, ON, Canada");
-  self.searchType = ko.observableArray([]);
+  self.searchType = ko.observableArray(["restaurant", "subway_station"]);
   self.allResultLists = ko.observableArray([]);
   self.skycons = new Skycons({"color": "#3385ff"});
   self.localWeather = new weatherItem("local-weather", false);
@@ -221,9 +258,8 @@ var ViewModel = function() {
         geocodeAddress(self.searchType()[i]);
       }
     }
-
-
   }
+
 
   self.searchMap = function() {
     removeAllMarkers();
@@ -339,16 +375,7 @@ function setMapOnAllMarkers(map) {
 }
 
 
-function selectPlace(p) {
-  if (_viewModel.placeSelected2()) {
-    _viewModel.placeSelected1(_viewModel.placeSelected2());
-    _viewModel.placeSelected2(p);
-  }
-  else {
-    _viewModel.placeSelected2(p);
-  }
 
-}
 
 
 var placeItem = function(data) {
@@ -360,6 +387,7 @@ var placeItem = function(data) {
   this.id = ko.observable(data.place_id)
   this.geometry = ko.observable(data.geometry);
   this.website = ko.observable(data.website);
+  this.markerIndex = ko.observable();
 };
 
 

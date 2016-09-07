@@ -13,8 +13,6 @@
   <script src="js/lib/knockout-3.4.0.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_G9M1jfplVlXowZkrok4p8Sr6om0pFmc&libraries=places,geometry&callback=initMap" async defer></script>
   <script src="js/lib/skycons.js"></script>
-
-
 </head>
 
 <body>
@@ -136,7 +134,7 @@
 </script>
 
 <script type="text/html" id="resultsItem-template">
-  <div class="dropdown resultItem" data-bind="event: {mouseover:getPlaceDetials}, click: selectPlace" draggable="true">
+  <div class="dropdown resultItem" data-bind="event: {mouseover:getPlaceDetials}, click: listItemClicked" draggable="true">
     <button class="btn btn-default btn-s dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       <span>
         <img src="" alt="icon" data-bind="attr:{src:icon}" height="15" width="15">
