@@ -84,6 +84,18 @@
     <!-- Search Results -->
     <div id="resultSidenav" class="sidenav" data-bind="style: { display: openResultWindow() ? 'inline' : 'none' }">
       <a href="javascript:void(0)" class="closebtn" onclick="closeResults()">&times;</a>
+        <div>
+          <h4><span class = "glyphicon glyphicon-pushpin red" aria-hidden="true"></span>Places Selected</h4>
+          <div data-bind="with: placeSelected1">
+            <button data-bind="text: name"></button>
+          </div>
+          <div data-bind="with: placeSelected2">
+            <button data-bind="text: name"></button>
+          </div>
+          <h4 data-bind="text: routeResult"></h4>
+          <button class="btn-warning" data-bind="click: getRoute">Calculate Walking Time</button>
+        </div>
+
       <div class="resultArea" data-bind="template: { name: 'resultsList-template', foreach: allResultLists}"></div>
     </div>
     <!-- Weather -->
@@ -92,21 +104,7 @@
       <div class="weatherWidget text-center" data-bind="template: { name: 'weather-template', data:localWeather}"></div>
       <div class="weatherWidget text-center" data-bind="template: { name: 'weather-time-machine-template', data:pastWeather}"></div>
     </div>
-    <!-- walking time -->
-    <div id="walkSidenav" class="sidenav" data-bind="style: { display: openTimeWindow() ? 'inline' : 'none' }">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeWalkTime()">&times;</a>
-      <div>
-        <h4><span class = "glyphicon glyphicon-pushpin red" aria-hidden="true"></span>Places Selected</h4>
-        <div data-bind="with: placeSelected1">
-          <button data-bind="text: name"></button>
-        </div>
-        <div data-bind="with: placeSelected2">
-          <button data-bind="text: name"></button>
-        </div>
-        <h4 data-bind="text: routeResult"></h4>
-        <button class="btn-warning" data-bind="click: getRoute">Walking Time</button>
-      </div>
-    </div>
+
 
 <div class="row">
     <div class="col-xs-3  btn-sm btn-primary navMenuItem" onclick="openSearch()">
@@ -121,10 +119,10 @@
       <span>Weather</span>
       <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
     </div>
-    <div class="col-xs-3 btn-sm btn-primary navMenuItem" onclick="openWalkTime()">
+    <!-- <div class="col-xs-3 btn-sm btn-primary navMenuItem" onclick="openWalkTime()">
       <span>Walking</span>
       <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-    </div>
+    </div> -->
 </div>
 
 <div class="row mapArea">

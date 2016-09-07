@@ -188,16 +188,6 @@ function closeWeather() {
   _viewModel.openWeatherWindow(false);
 }
 
-function openWalkTime() {
-  _viewModel.openTimeWindow(true);
-}
-
-function closeWalkTime() {
-  _viewModel.openTimeWindow(false);
-}
-
-
-
 
 var ViewModel = function() {
   var self = this;
@@ -213,7 +203,6 @@ var ViewModel = function() {
   self.openSearchWindow = ko.observable(false);
   self.openResultWindow = ko.observable(false);
   self.openWeatherWindow = ko.observable(false);
-  self.openTimeWindow = ko.observable(false);
 
   self.updateAddressAndType = function() {
     removeAllMarkers();
