@@ -72,7 +72,7 @@
       </fieldset>
       <br />
       <div id="floating-panel">
-        <form data-bind="submit: updateAddressAndType">
+        <form data-bind="submit: updateAddressAndType" onclick="closeSearch(), openResults()">
           <p>Enter Address:</p>
           <input id="pac-input" type="textbox" data-bind="value: inputAddress" value="Toronto, ON, Canada" width="250"/>
           <button class="btn-primary" type="submit"> <span class="glyphicon glyphicon-send larger" aria-hidden="true"></span> Get Info </button>
