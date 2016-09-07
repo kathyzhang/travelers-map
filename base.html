@@ -22,7 +22,7 @@
 
     <div class="row inputArea">
       <div>
-        <span class="inline">
+        <span class="inline site-name">
           <span class="glyphicon glyphicon-globe xlarger" aria-hidden="true"></span>
           <h2>Traveler's Map</h2>
         </span>
@@ -54,7 +54,7 @@
     </div>
 
     <!-- Search -->
-    <div id="searchSidenav" class="sidenav" data-bind="style: { width: openSearchWindow() ? '100%' : '0' }">
+    <div id="searchSidenav" class="sidenav" data-bind="style: { display: openSearchWindow() ? 'inline' : 'none' }">
       <a href="javascript:void(0)" class="closebtn" onclick="closeSearch()">&times;</a>
       <fieldset data-role="controlgroup">
         <span class="inline">
@@ -82,18 +82,18 @@
     </div>
 
     <!-- Search Results -->
-    <div id="resultSidenav" class="sidenav" data-bind="style: { width: openResultWindow() ? '100%' : '0' }">
+    <div id="resultSidenav" class="sidenav" data-bind="style: { display: openResultWindow() ? 'inline' : 'none' }">
       <a href="javascript:void(0)" class="closebtn" onclick="closeResults()">&times;</a>
       <div class="resultArea" data-bind="template: { name: 'resultsList-template', foreach: allResultLists}"></div>
     </div>
     <!-- Weather -->
-    <div id="weatherSidenav" class="sidenav" data-bind="style: { width: openWeatherWindow() ? '100%' : '0' }">
+    <div id="weatherSidenav" class="sidenav" data-bind="style: { display: openWeatherWindow() ? 'inline' : 'none' }">
       <a href="javascript:void(0)" class="closebtn" onclick="closeWeather()">&times;</a>
       <div class="weatherWidget text-center" data-bind="template: { name: 'weather-template', data:localWeather}"></div>
       <div class="weatherWidget text-center" data-bind="template: { name: 'weather-time-machine-template', data:pastWeather}"></div>
     </div>
     <!-- walking time -->
-    <div id="walkSidenav" class="sidenav" data-bind="style: { width: openTimeWindow() ? '100%' : '0' }">
+    <div id="walkSidenav" class="sidenav" data-bind="style: { display: openTimeWindow() ? 'inline' : 'none' }">
       <a href="javascript:void(0)" class="closebtn" onclick="closeWalkTime()">&times;</a>
       <div>
         <h4><span class = "glyphicon glyphicon-pushpin red" aria-hidden="true"></span>Places Selected</h4>
@@ -127,10 +127,8 @@
     </div>
 </div>
 
-<div class="row">
-  <div class="mapArea">
-    <div id="map"></div>
-  </div>
+<div class="row mapArea">
+  <div id="map"></div>
 </div>
 
 
