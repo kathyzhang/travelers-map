@@ -1,5 +1,4 @@
 var _allSearchTypes = [];
-var _addressInput = ko.observable();
 var _geocoder;
 var infowindow;
 var _markers = [];
@@ -11,7 +10,7 @@ var _DEGREE_FAHRENHEIT = "\u2109";
 
 
 function geocodeAddress(placeType) {
-  _geocoder.geocode({'address': _addressInput}, function(results, status) {
+  _geocoder.geocode({'address': _viewModel.inputAddress()}, function(results, status) {
     if (status === 'OK') {
       map.setCenter(results[0].geometry.location);
       infowindow = new google.maps.InfoWindow();
@@ -28,7 +27,6 @@ function geocodeAddress(placeType) {
       alert('Geocode was not successful for the following reason: ' + status);
     }
   });
-
 }
 
 
@@ -77,7 +75,7 @@ function initMap() {
   }
   _geocoder = new google.maps.Geocoder();
 
-  _viewModel.updateAddressAndType();
+  updateInputAddressAndType();
 }
 
 
@@ -99,7 +97,7 @@ function requestPlaceDetials(placeObserverble) {
   // Choose to use places' common information except hours.
   service.getDetails(request, function(placeDetails, status) {
     if (status !== google.maps.places.PlacesServiceStatus.OK || placeDetails.opening_hours === undefined) {
-      placeObserverble.hours("Place detail unknown");
+      placeObserverble.hours(["Place detail unknown"]);
     }
     else {
       var hours = placeDetails.opening_hours.weekday_text;
@@ -157,6 +155,7 @@ function createMarker(place, placeType, timeout, ranking) {
   google.maps.event.addListener(marker, 'click', function() {
     infowindow.setContent(place.name);
     infowindow.open(map, this);
+    toggleBounce(marker);
   });
 
   return index;
@@ -171,13 +170,13 @@ function listItemClicked(place) {
 
 function openInfoWindow(place) {
   console.log("in openInfoWindow");
-  toggleBounce(place.markerIndex());
+  var marker = _markers[place.markerIndex()];
+  toggleBounce(marker);
   infowindow.setContent(place.name());
 }
 
 
-function toggleBounce(markerIndex) {
-  var marker = _markers[markerIndex];
+function toggleBounce(marker) {
   if (marker.getAnimation() !== null) {
     marker.setAnimation(null);
   } else {
@@ -240,25 +239,6 @@ var ViewModel = function() {
   self.openSearchWindow = ko.observable(false);
   self.openResultWindow = ko.observable(false);
   self.openWeatherWindow = ko.observable(false);
-
-  self.updateAddressAndType = function() {
-    removeAllMarkers();
-    // for (var i=0 ; i<self.allResultLists().length ; i++) {
-    //   self.allResultLists()[i] = null;
-    // }
-    self.allResultLists().length = 0;
-    _addressInput = self.inputAddress();
-    _allSearchTypes = self.searchType();
-
-    if (self.searchType().length == 0) {
-      alert("Please choose searching types.");
-    }
-    else {
-      for (var i=0; i < self.searchType().length; i++) {
-        geocodeAddress(self.searchType()[i]);
-      }
-    }
-  }
 
 
   self.searchMap = function() {
@@ -327,6 +307,28 @@ var ViewModel = function() {
 };
 
 
+function updateInputAddressAndType() {
+  removeAllMarkers();
+  _viewModel.allResultLists().length = 0;
+  _allSearchTypes = _viewModel.searchType();
+
+  if (_viewModel.searchType().length == 0) {
+    alert("Please choose searching types.");
+  }
+  else {
+    for (var i=0; i < _viewModel.searchType().length; i++) {
+      geocodeAddress(_viewModel.searchType()[i]);
+    }
+  }
+}
+
+
+function updateAddress(data) {
+  _viewModel.inputAddress(data);
+  updateInputAddressAndType();
+}
+
+
 function getPlaceDetials(p) {
   if (p.hours() === undefined) {
     requestPlaceDetials(p);
@@ -382,7 +384,7 @@ var placeItem = function(data) {
   this.name = ko.observable(data.name);
   this.rating = ko.observable(data.rating);
   this.address = ko.observable(data.vicinity);
-  this.hours = ko.observable(data.hours);
+  this.hours = ko.observable();
   this.icon = ko.observable(data.icon);
   this.id = ko.observable(data.place_id)
   this.geometry = ko.observable(data.geometry);

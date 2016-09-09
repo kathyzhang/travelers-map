@@ -25,103 +25,122 @@
           <h2>Traveler's Map</h2>
         </span>
         <!-- <fieldset data-role="controlgroup">
-          <span class="inline">
-            <span class="glyphicon glyphicon-cutlery larger" aria-hidden="true">Restaurant</span>
-            <input type="checkbox" data-bind="checked:searchType" value="restaurant">
-          </span>
-          <span class="inline">
-            <span class="glyphicon glyphicon-home larger" aria-hidden="true">Museum</span>
-            <input type="checkbox" data-bind="checked:searchType" value="museum">
-          </span>
-          <span class="inline">
-            <span class="glyphicon glyphicon-bed larger" aria-hidden="true">Subway</span>
-            <input type="checkbox" data-bind="checked:searchType" value="subway_station">
-          </span>
-        </fieldset>
-
-        <br />
-        <div id="floating-panel">
-          <form data-bind="submit: updateAddressAndType">
-            <p>Enter Address:</p>
-            <input id="pac-input" type="textbox" data-bind="value: inputAddress" value="Toronto, ON, Canada" width="250"/>
-            <button class="btn-primary" type="submit"> <span class="glyphicon glyphicon-send larger" aria-hidden="true"></span> Get Info </button>
-          </form>
-        </div>
-        <button class="btn-info" data-bind="click: searchMap"> <span class="glyphicon glyphicon-search larger" aria-hidden="true"></span>Search Current Map Area </button> -->
-      </div>
-    </div>
-
-    <!-- Search -->
-    <div id="searchSidenav" class="sidenav" data-bind="style: { display: openSearchWindow() ? 'inline' : 'none' }">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeSearch()">&times;</a>
-      <fieldset data-role="controlgroup">
         <span class="inline">
-          <span class="glyphicon glyphicon-cutlery larger" aria-hidden="true">Restaurant</span>
-          <input type="checkbox" data-bind="checked:searchType" value="restaurant">
-        </span>
-        <span class="inline">
-          <span class="glyphicon glyphicon-home larger" aria-hidden="true">Museum</span>
-          <input type="checkbox" data-bind="checked:searchType" value="museum">
-        </span>
-        <span class="inline">
-          <span class="glyphicon glyphicon-bed larger" aria-hidden="true">Subway</span>
-          <input type="checkbox" data-bind="checked:searchType" value="subway_station">
-        </span>
-      </fieldset>
-      <br />
-      <div id="floating-panel">
-        <form data-bind="submit: updateAddressAndType" onclick="closeSearch(), openResults()">
-          <p>Enter Address:</p>
-          <input id="pac-input" type="textbox" data-bind="value: inputAddress" value="Toronto, ON, Canada" width="250"/>
-          <button class="btn-primary" type="submit"> <span class="glyphicon glyphicon-send larger" aria-hidden="true"></span> Get Info </button>
-        </form>
-      </div>
-      <button class="btn-info" data-bind="click: searchMap"> <span class="glyphicon glyphicon-search larger" aria-hidden="true"></span>Search Current Map Area </button>
-    </div>
+        <span class="glyphicon glyphicon-cutlery larger" aria-hidden="true">Restaurant</span>
+        <input type="checkbox" data-bind="checked:searchType" value="restaurant">
+      </span>
+      <span class="inline">
+      <span class="glyphicon glyphicon-home larger" aria-hidden="true">Museum</span>
+      <input type="checkbox" data-bind="checked:searchType" value="museum">
+    </span>
+    <span class="inline">
+    <span class="glyphicon glyphicon-bed larger" aria-hidden="true">Subway</span>
+    <input type="checkbox" data-bind="checked:searchType" value="subway_station">
+  </span>
+</fieldset>
 
-    <!-- Search Results -->
-    <div id="resultSidenav" class="sidenav" data-bind="style: { display: openResultWindow() ? 'inline' : 'none' }">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeResults()">&times;</a>
-        <div>
-          <h4><span class = "glyphicon glyphicon-pushpin red" aria-hidden="true"></span>Places Selected</h4>
-          <div data-bind="with: placeSelected1">
-            <button data-bind="text: name"></button>
-          </div>
-          <div data-bind="with: placeSelected2">
-            <button data-bind="text: name"></button>
-          </div>
-          <h4 data-bind="text: routeResult"></h4>
-          <button class="btn-warning" data-bind="click: getRoute">Calculate Walking Time</button>
-        </div>
+<br />
+<div id="floating-panel">
+<form data-bind="submit: updateAddressAndType">
+<p>Enter Address:</p>
+<input id="pac-input" type="textbox" data-bind="value: inputAddress" value="Toronto, ON, Canada" width="250"/>
+<button class="btn-primary" type="submit"> <span class="glyphicon glyphicon-send larger" aria-hidden="true"></span> Get Info </button>
+</form>
+</div>
+<button class="btn-info" data-bind="click: searchMap"> <span class="glyphicon glyphicon-search larger" aria-hidden="true"></span>Search Current Map Area </button> -->
+</div>
+</div>
 
-      <div class="resultArea" data-bind="template: { name: 'resultsList-template', foreach: allResultLists}"></div>
+<!-- Search -->
+<div id="searchSidenav" class="sidenav" data-bind="style: { display: openSearchWindow() ? 'inline' : 'none' }">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeSearch()">&times;</a>
+  <fieldset data-role="controlgroup">
+    <span class="inline">
+      <span class="glyphicon glyphicon-cutlery larger" aria-hidden="true">Restaurant</span>
+      <input type="checkbox" data-bind="checked:searchType" value="restaurant">
+    </span>
+    <span class="inline">
+      <span class="glyphicon glyphicon-home larger" aria-hidden="true">Museum</span>
+      <input type="checkbox" data-bind="checked:searchType" value="museum">
+    </span>
+    <span class="inline">
+      <span class="glyphicon glyphicon-bed larger" aria-hidden="true">Subway</span>
+      <input type="checkbox" data-bind="checked:searchType" value="subway_station">
+    </span>
+  </fieldset>
+  <br />
+  <div id="floating-panel">
+    <form data-bind="submit: updateInputAddressAndType" onclick="closeSearch(), openResults()">
+      <p>Enter Address:</p>
+      <input id="pac-input" type="textbox" data-bind="value: inputAddress" value="Toronto, ON, Canada" width="250"/>
+      <button class="btn-primary" type="submit"> <span class="glyphicon glyphicon-send larger" aria-hidden="true"></span> Get Info </button>
+    </form>
+  </div>
+  <button class="btn-info" data-bind="click: searchMap"> <span class="glyphicon glyphicon-search larger" aria-hidden="true"></span>Search Current Map Area </button>
+</div>
+
+<!-- Search Results -->
+<div id="resultSidenav" class="sidenav" data-bind="style: { display: openResultWindow() ? 'inline' : 'none' }">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeResults()">&times;</a>
+  <div>
+    <h4><span class = "glyphicon glyphicon-pushpin red" aria-hidden="true"></span>Places Selected</h4>
+    <div data-bind="with: placeSelected1">
+      <button data-bind="text: name"></button>
     </div>
-    <!-- Weather -->
-    <div id="weatherSidenav" class="sidenav" data-bind="style: { display: openWeatherWindow() ? 'inline' : 'none' }">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeWeather()">&times;</a>
-      <div class="weatherWidget text-center" data-bind="template: { name: 'weather-template', data:localWeather}"></div>
-      <div class="weatherWidget text-center" data-bind="template: { name: 'weather-time-machine-template', data:pastWeather}"></div>
+    <div data-bind="with: placeSelected2">
+      <button data-bind="text: name"></button>
     </div>
+    <h4 data-bind="text: routeResult"></h4>
+    <button class="btn-warning" data-bind="click: getRoute">Calculate Walking Time</button>
+  </div>
+
+  <div class="resultArea" data-bind="template: { name: 'resultsList-template', foreach: allResultLists}"></div>
+</div>
+<!-- Weather -->
+<div id="weatherSidenav" class="sidenav" data-bind="style: { display: openWeatherWindow() ? 'inline' : 'none' }">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeWeather()">&times;</a>
+  <div class="weatherWidget text-center" data-bind="template: { name: 'weather-template', data:localWeather}"></div>
+  <div class="weatherWidget text-center" data-bind="template: { name: 'weather-time-machine-template', data:pastWeather}"></div>
+</div>
 
 
 <div class="row">
-    <div class="col-xs-3  btn-sm btn-primary navMenuItem" onclick="openSearch()">
-      <span >Search</span>
-      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-    </div>
-    <div class="col-xs-3 btn-sm btn-primary navMenuItem" onclick="openResults()">
-      <span>Results</span>
-      <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-    </div>
-    <div class="col-xs-3 btn-sm btn-primary navMenuItem" onclick="openWeather()">
-      <span>Weather</span>
-      <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
-    </div>
-    <!-- <div class="col-xs-3 btn-sm btn-primary navMenuItem" onclick="openWalkTime()">
-      <span>Walking</span>
-      <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-    </div> -->
+  <div class="col-xs-2 btn-sm btn-success navMenuItem" onclick="updateAddress('Paris, France')">
+    Paris, France
+  </div>
+  <div class="col-xs-2 btn-sm btn-danger navMenuItem" onclick="updateAddress('Beijing, China')">
+    Beijing, China
+  </div>
+  <div class="col-xs-2 btn-sm btn-warning navMenuItem" onclick="updateAddress('San Francisco, CA, USA')">
+    San Francisco
+  </div>
+  <div class="col-xs-2 btn-sm btn-info navMenuItem" onclick="updateAddress('Tokoyo, Japan')">
+    Tokoyo
+  </div>
+  <div class="col-xs-2 btn-sm btn-primary navMenuItem" onclick="updateAddress('London, UK')">
+    London
+  </div>
 </div>
+
+
+<div class="row">
+  <div class="col-xs-3  btn-md btn-default navMenuItem" onclick="openSearch()">
+    <span >Search</span>
+    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+  </div>
+  <div class="col-xs-3 btn-md btn-default navMenuItem" onclick="openResults()">
+    <span>Results</span>
+    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+  </div>
+  <div class="col-xs-3 btn-md btn-default navMenuItem" onclick="openWeather()">
+    <span>Weather</span>
+    <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
+  </div>
+  <div class="col-xs-3 btn-md btn-default navMenuItem">
+  <span>About</span>
+  </div>
+</div>
+
 
 <div class="row mapArea">
   <div id="map"></div>
@@ -142,15 +161,14 @@
       </span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-      <li class="dropdown-submenu">
-        <a tabindex="-1" href="#">Hours</a>
-        <ul class="dropdown-menu">
-          <li data-bind="text: hours"></li>
-        </ul>
+      <span>Hours:</span>
+      <li data-bind="foreach: hours">
+        <p data-bind="text: $data"></p>
       </li>
+      <span>Address:</span>
       <li data-bind="text: address"></li>
       <li role="separator" class="divider"></li>
-      <li><a data-bind="attr:{href: website}">website</a></li>
+      <!-- <li><a data-bind="attr:{href: website}">website</a></li> -->
     </ul>
   </div>
 </script>
