@@ -69,6 +69,25 @@
     </span>
   </fieldset>
   <br />
+
+  <div class="col-xs-2 btn-sm btn-success navMenuItem" onclick="updateAddress('Paris, France')">
+    Paris
+  </div>
+  <div class="col-xs-2 btn-sm btn-danger navMenuItem" onclick="updateAddress('Beijing, China')">
+    Beijing
+  </div>
+  <div class="col-xs-2 btn-sm btn-warning navMenuItem" onclick="updateAddress('Los Angeles, CA, USA')">
+    LA
+  </div>
+  <div class="col-xs-2 btn-sm btn-info navMenuItem" onclick="updateAddress('Tokoyo, Japan')">
+    Tokoyo
+  </div>
+  <div class="col-xs-2 btn-sm btn-primary navMenuItem" onclick="updateAddress('London, UK')">
+    London
+  </div>
+
+    <br />
+
   <div id="floating-panel">
     <form data-bind="submit: updateInputAddressAndType" onclick="closeSearch(), openResults()">
       <p>Enter Address:</p>
@@ -105,38 +124,19 @@
 
 
 <div class="row">
-  <div class="col-xs-2 btn-sm btn-success navMenuItem" onclick="updateAddress('Paris, France')">
-    Paris, France
-  </div>
-  <div class="col-xs-2 btn-sm btn-danger navMenuItem" onclick="updateAddress('Beijing, China')">
-    Beijing, China
-  </div>
-  <div class="col-xs-2 btn-sm btn-warning navMenuItem" onclick="updateAddress('San Francisco, CA, USA')">
-    San Francisco
-  </div>
-  <div class="col-xs-2 btn-sm btn-info navMenuItem" onclick="updateAddress('Tokoyo, Japan')">
-    Tokoyo
-  </div>
-  <div class="col-xs-2 btn-sm btn-primary navMenuItem" onclick="updateAddress('London, UK')">
-    London
-  </div>
-</div>
-
-
-<div class="row">
-  <div class="col-xs-3  btn-md btn-default navMenuItem" onclick="openSearch()">
+  <div class="col-xs-3 btn btn-info navMenuItem" onclick="openSearch()">
     <span >Search</span>
     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
   </div>
-  <div class="col-xs-3 btn-md btn-default navMenuItem" onclick="openResults()">
+  <div class="col-xs-3 btn btn-info navMenuItem" onclick="openResults()">
     <span>Results</span>
     <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
   </div>
-  <div class="col-xs-3 btn-md btn-default navMenuItem" onclick="openWeather()">
+  <div class="col-xs-3 btn btn-info navMenuItem" onclick="openWeather()">
     <span>Weather</span>
     <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
   </div>
-  <div class="col-xs-3 btn-md btn-default navMenuItem">
+  <div class="col-xs-3 btn btn-info navMenuItem">
   <span>About</span>
   </div>
 </div>

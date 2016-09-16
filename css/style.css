@@ -56,10 +56,6 @@ html, body, #map, .container-fluid, .mapArea{
   margin: 10px;
 }
 
-.btn-info {
-  background-color: #6699ff;
-}
-
 .btn span.glyphicon {
 	opacity: 0;
 }

@@ -142,14 +142,14 @@ function createMarker(place, placeType, timeout, ranking) {
 
   marker = new google.maps.Marker({
     map: map,
-    // icon: image,
+    icon: image,
     // label: (place.rating > 0 ? String(place.rating) : "?"),
     // label: (ranking < 10 ? ranking : ""),
     position: place.geometry.location,
     animation: google.maps.Animation.DROP
   });
 
-  marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+  //marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
 
   index = _markers.push(marker)-1;
   google.maps.event.addListener(marker, 'click', function() {
