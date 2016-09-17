@@ -57,18 +57,19 @@
   <fieldset data-role="controlgroup">
     <span class="inline">
       <span class="glyphicon glyphicon-cutlery larger" aria-hidden="true">Restaurant</span>
-      <input type="checkbox" data-bind="checked:searchType" value="restaurant">
+      <input type="radio" data-bind="checked:searchType" value="restaurant">
     </span>
     <span class="inline">
       <span class="glyphicon glyphicon-home larger" aria-hidden="true">Museum</span>
-      <input type="checkbox" data-bind="checked:searchType" value="museum">
+      <input type="radio" data-bind="checked:searchType" value="museum">
     </span>
     <span class="inline">
       <span class="glyphicon glyphicon-bed larger" aria-hidden="true">Subway</span>
-      <input type="checkbox" data-bind="checked:searchType" value="subway_station">
+      <input type="radio" data-bind="checked:searchType" value="subway_station">
     </span>
   </fieldset>
   <br />
+
 
   <div class="col-xs-2 btn-sm btn-success navMenuItem" onclick="updateAddress('Paris, France')">
     Paris
@@ -86,7 +87,7 @@
     London
   </div>
 
-    <br />
+  <br />
 
   <div id="floating-panel">
     <form data-bind="submit: updateInputAddressAndType" onclick="closeSearch(), openResults()">

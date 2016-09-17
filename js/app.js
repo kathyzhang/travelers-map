@@ -224,6 +224,9 @@ function closeWeather() {
   _viewModel.openWeatherWindow(false);
 }
 
+// function resultItemFilter() {
+//   _viewModel.allR
+// }
 
 var ViewModel = function() {
   var self = this;
@@ -236,7 +239,7 @@ var ViewModel = function() {
   self.placeSelected1 = ko.observable();
   self.placeSelected2 = ko.observable();
   self.routeResult = ko.observable();
-  self.openSearchWindow = ko.observable(false);
+  self.openSearchWindow = ko.observable(true);
   self.openResultWindow = ko.observable(false);
   self.openWeatherWindow = ko.observable(false);
 
