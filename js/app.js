@@ -1,4 +1,3 @@
-var _allSearchTypes = [];
 var _geocoder;
 var infowindow;
 var _markers = [];
@@ -110,20 +109,17 @@ function requestPlaceDetials(placeObserverble) {
 
 
 function renderResults(results, placeType) {
-  var newResultsList = new resultsList();
-  newResultsList.typeName = placeType;
 
   for (var i = 0; i < results.length; i++) {
     var index = createMarker(results[i], placeType, i*100, String(i+1));
     var item = new placeItem(results[i]);
     item.markerIndex(index);
-    newResultsList.resultItemList.push(item);
+    _viewModel.resultItemList.push(item);
     // TODO: Enable more search result rendering
     // if (i > 7) {
     //   break;
     // }
   }
-  _viewModel.allResultLists.push(newResultsList);
 }
 
 
@@ -142,14 +138,14 @@ function createMarker(place, placeType, timeout, ranking) {
 
   marker = new google.maps.Marker({
     map: map,
-    icon: image,
+    //icon: image,
     // label: (place.rating > 0 ? String(place.rating) : "?"),
     // label: (ranking < 10 ? ranking : ""),
     position: place.geometry.location,
     animation: google.maps.Animation.DROP
   });
 
-  //marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+  marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
 
   index = _markers.push(marker)-1;
   google.maps.event.addListener(marker, 'click', function() {
@@ -231,8 +227,8 @@ function closeWeather() {
 var ViewModel = function() {
   var self = this;
   self.inputAddress = ko.observable("Toronto, ON, Canada");
-  self.searchType = ko.observableArray(["restaurant", "subway_station"]);
-  self.allResultLists = ko.observableArray([]);
+  self.searchType = ko.observable("restaurant");
+  self.resultItemList = ko.observableArray([]);
   self.skycons = new Skycons({"color": "#3385ff"});
   self.localWeather = new weatherItem("local-weather", false);
   self.pastWeather = new weatherItem("past-weather", true);
@@ -246,14 +242,10 @@ var ViewModel = function() {
 
   self.searchMap = function() {
     removeAllMarkers();
-    for (var i=0 ; i<self.allResultLists().length ; i++) {
-      self.allResultLists()[i] = null;
-    }
-    self.allResultLists().length = 0;
 
-    for (var i=0; i < self.searchType().length; i++) {
-      searchCurrentMapArea(self.searchType()[i]);
-    }
+    self.resultItemList().length = 0;
+
+    searchCurrentMapArea(self.searchType());
   }
 
   self.getWeather = function(w) {
@@ -312,16 +304,13 @@ var ViewModel = function() {
 
 function updateInputAddressAndType() {
   removeAllMarkers();
-  _viewModel.allResultLists().length = 0;
-  _allSearchTypes = _viewModel.searchType();
+  _viewModel.resultItemList().length = 0;
 
-  if (_viewModel.searchType().length == 0) {
+  if (_viewModel.searchType() == null) {
     alert("Please choose searching types.");
   }
   else {
-    for (var i=0; i < _viewModel.searchType().length; i++) {
-      geocodeAddress(_viewModel.searchType()[i]);
-    }
+    geocodeAddress(_viewModel.searchType());
   }
 }
 
@@ -409,12 +398,6 @@ var weatherItem = function(id, isTimeMachine) {
   self.isTimeMachine = isTimeMachine;
   self.weatherTimeMachineTime = ko.observable("2013-05-06T12:00:00-0400");
 }
-
-
-var resultsList = function(data) {
-  this.typeName = ko.observable();
-  this.resultItemList = ko.observableArray([]);
-};
 
 
 var _viewModel = new ViewModel;

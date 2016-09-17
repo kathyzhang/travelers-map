@@ -114,7 +114,7 @@
     <button class="btn-warning" data-bind="click: getRoute">Calculate Walking Time</button>
   </div>
 
-  <div class="resultArea" data-bind="template: { name: 'resultsList-template', foreach: allResultLists}"></div>
+  <div class="resultArea" data-bind="template: { name: 'resultsItem-template', foreach: resultItemList}"></div>
 </div>
 <!-- Weather -->
 <div id="weatherSidenav" class="sidenav" data-bind="style: { display: openWeatherWindow() ? 'inline' : 'none' }">
@@ -147,11 +147,6 @@
   <div id="map"></div>
 </div>
 
-
-<script type="text/html" id="resultsList-template">
-  <h3 class="capitalize" data-bind="text: typeName"></h3>
-  <div data-bind="template: { name: 'resultsItem-template', foreach: resultItemList}"></div>
-</script>
 
 <script type="text/html" id="resultsItem-template">
   <div class="dropdown resultItem" data-bind="event: {mouseover:getPlaceDetials}, click: listItemClicked" draggable="true">
