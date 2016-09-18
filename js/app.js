@@ -120,6 +120,7 @@ function renderResults(results, placeType) {
     //   break;
     // }
   }
+  _viewModel.resultItemDisplayed(_viewModel.resultItemList());
 }
 
 
@@ -220,15 +221,20 @@ function closeWeather() {
   _viewModel.openWeatherWindow(false);
 }
 
-// function resultItemFilter() {
-//   _viewModel.allR
-// }
+
+function resultItemFilterFunction(place) {
+    return place.name().toLowerCase().includes(_viewModel.searchInput().toLowerCase());
+}
+
 
 var ViewModel = function() {
   var self = this;
   self.inputAddress = ko.observable("Toronto, ON, Canada");
   self.searchType = ko.observable("restaurant");
   self.resultItemList = ko.observableArray([]);
+  self.resultItemFilterList = ko.observableArray([]);
+  self.resultItemDisplayed = ko.observableArray([]);
+  self.searchInput = ko.observable();
   self.skycons = new Skycons({"color": "#3385ff"});
   self.localWeather = new weatherItem("local-weather", false);
   self.pastWeather = new weatherItem("past-weather", true);
@@ -299,6 +305,15 @@ var ViewModel = function() {
       self.routeResult("Choose two places.");
     }
   }
+
+  self.resultItemFilter = function() {
+    self.resultItemFilterList(self.resultItemList().filter(resultItemFilterFunction));
+    self.resultItemDisplayed(self.resultItemFilterList());
+  }
+
+  self.cancelFilter = function() {
+    self.resultItemDisplayed(self.resultItemList());
+  }
 };
 
 
@@ -311,7 +326,9 @@ function updateInputAddressAndType() {
   }
   else {
     geocodeAddress(_viewModel.searchType());
+
   }
+
 }
 
 
