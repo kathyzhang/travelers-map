@@ -8,11 +8,13 @@
   <meta name="description" content="A map App">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="js/lib/knockout-3.4.0.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_G9M1jfplVlXowZkrok4p8Sr6om0pFmc&libraries=places,geometry&callback=initMap" async defer></script>
   <script src="js/lib/skycons.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
 </head>
 
 <body>
@@ -24,36 +26,14 @@
           <span class="glyphicon glyphicon-globe xlarger" aria-hidden="true"></span>
           <h2>Traveler's Map</h2>
         </span>
-        <!-- <fieldset data-role="controlgroup">
-        <span class="inline">
-        <span class="glyphicon glyphicon-cutlery larger" aria-hidden="true">Restaurant</span>
-        <input type="checkbox" data-bind="checked:searchType" value="restaurant">
-      </span>
-      <span class="inline">
-      <span class="glyphicon glyphicon-home larger" aria-hidden="true">Museum</span>
-      <input type="checkbox" data-bind="checked:searchType" value="museum">
-    </span>
-    <span class="inline">
-    <span class="glyphicon glyphicon-bed larger" aria-hidden="true">Subway</span>
-    <input type="checkbox" data-bind="checked:searchType" value="subway_station">
-  </span>
-</fieldset>
-
-<br />
-<div id="floating-panel">
-<form data-bind="submit: updateAddressAndType">
-<p>Enter Address:</p>
-<input id="pac-input" type="textbox" data-bind="value: inputAddress" value="Toronto, ON, Canada" width="250"/>
-<button class="btn-primary" type="submit"> <span class="glyphicon glyphicon-send larger" aria-hidden="true"></span> Get Info </button>
-</form>
-</div>
-<button class="btn-info" data-bind="click: searchMap"> <span class="glyphicon glyphicon-search larger" aria-hidden="true"></span>Search Current Map Area </button> -->
-</div>
-</div>
+      </div>
+    </div>
 
 <!-- Search -->
 <div id="searchSidenav" class="sidenav" data-bind="style: { display: openSearchWindow() ? 'inline' : 'none' }">
   <a href="javascript:void(0)" class="closebtn" onclick="closeSearch()">&times;</a>
+  <br />
+  <br />
   <fieldset data-role="controlgroup">
     <span class="inline">
       <span class="glyphicon glyphicon-cutlery larger" aria-hidden="true">Restaurant</span>
@@ -68,7 +48,106 @@
       <input type="radio" data-bind="checked:searchType" value="subway_station">
     </span>
   </fieldset>
+
+  <span class="inline large">
+    <span class="glyphicon glyphicon-plus larger">Other</span>
+  </span>
+  <select class="selectpicker select-option btn-sm" data-live-search="true" data-bind="value :searchType">
+    <option>accounting</option>
+    <option>airport</option>
+    <option>amusement_park</option>
+    <option>aquarium</option>
+    <option>art_gallery</option>
+    <option>atm</option>
+    <option>bakery</option>
+    <option>bank</option>
+    <option>bar</option>
+    <option>beauty_salon</option>
+    <option>bicycle_store</option>
+    <option>book_store</option>
+    <option>bowling_alley</option>
+    <option>bus_station</option>
+    <option>cafe</option>
+    <option>campground</option>
+    <option>car_dealer</option>
+    <option>car_rental</option>
+    <option>car_repair</option>
+    <option>car_wash</option>
+    <option>casino</option>
+    <option>cemetery</option>
+    <option>church</option>
+    <option>city_hall</option>
+    <option>clothing_store</option>
+    <option>convenience_store</option>
+    <option>courthouse</option>
+    <option>dentist</option>
+    <option>department_store</option>
+    <option>doctor</option>
+    <option>electrician</option>
+    <option>electronics_store</option>
+    <option>embassy</option>
+    <option>fire_station</option>
+    <option>florist</option>
+    <option>funeral_home</option>
+    <option>furniture_store</option>
+    <option>gas_station</option>
+    <option>gym</option>
+    <option>hair_care</option>
+    <option>hardware_store</option>
+    <option>hindu_temple</option>
+    <option>home_goods_store</option>
+    <option>hospital</option>
+    <option>insurance_agency</option>
+    <option>jewelry_store</option>
+    <option>laundry</option>
+    <option>lawyer</option>
+    <option>library</option>
+    <option>liquor_store</option>
+    <option>local_government_office</option>
+    <option>locksmith</option>
+    <option>lodging</option>
+    <option>meal_delivery</option>
+    <option>meal_takeaway</option>
+    <option>mosque</option>
+    <option>movie_rental</option>
+    <option>movie_theater</option>
+    <option>moving_company</option>
+    <option>museum</option>
+    <option>night_club</option>
+    <option>painter</option>
+    <option>park</option>
+    <option>parking</option>
+    <option>pet_store</option>
+    <option>pharmacy</option>
+    <option>physiotherapist</option>
+    <option>plumber</option>
+    <option>police</option>
+    <option>post_office</option>
+    <option>real_estate_agency</option>
+    <option>restaurant</option>
+    <option>roofing_contractor</option>
+    <option>rv_park</option>
+    <option>school</option>
+    <option>shoe_store</option>
+    <option>shopping_mall</option>
+    <option>spa</option>
+    <option>stadium</option>
+    <option>storage</option>
+    <option>store</option>
+    <option>subway_station</option>
+    <option>synagogue</option>
+    <option>taxi_stand</option>
+    <option>train_station</option>
+    <option>transit_station</option>
+    <option>travel_agency</option>
+    <option>university</option>
+    <option>veterinary_care</option>
+    <option>zoo</option>
+  </select>
+
+
   <br />
+  <hr />
 
 
   <div class="col-xs-2 btn-sm btn-success navMenuItem" onclick="updateAddress('Paris, France')">
@@ -87,7 +166,7 @@
     London
   </div>
 
-  <br />
+  <hr />
 
   <div id="floating-panel">
     <form data-bind="submit: updateInputAddressAndType" onclick="closeSearch(), openResults()">
@@ -102,6 +181,8 @@
 <!-- Search Results -->
 <div id="resultSidenav" class="sidenav" data-bind="style: { display: openResultWindow() ? 'inline' : 'none' }">
   <a href="javascript:void(0)" class="closebtn" onclick="closeResults()">&times;</a>
+  <br />
+  <br />
   <div>
     <h4><span class = "glyphicon glyphicon-pushpin red" aria-hidden="true"></span>Places Selected</h4>
     <div data-bind="with: placeSelected1">
@@ -116,6 +197,9 @@
 
   <hr />
 
+  <div class="error-message" data-bind="text: errorMessage">
+  </div>
+
   <div id="floating-panel">
     <form data-bind="submit: resultItemFilter">
       <input id="pac-input" type="textbox" data-bind="value: searchInput" value="search input" width="250"/>
@@ -127,11 +211,17 @@
 
   <div class="resultArea" data-bind="template: { name: 'resultsItem-template', foreach: resultItemDisplayed}"></div>
 </div>
+
 <!-- Weather -->
 <div id="weatherSidenav" class="sidenav" data-bind="style: { display: openWeatherWindow() ? 'inline' : 'none' }">
   <a href="javascript:void(0)" class="closebtn" onclick="closeWeather()">&times;</a>
-  <div class="weatherWidget text-center" data-bind="template: { name: 'weather-template', data:localWeather}"></div>
-  <div class="weatherWidget text-center" data-bind="template: { name: 'weather-time-machine-template', data:pastWeather}"></div>
+  <br />
+  <br />
+  <div>
+    <div class="weatherWidget text-center" data-bind="template: { name: 'weather-template', data:localWeather}"></div>
+    <div class="weatherWidget text-center" data-bind="template: { name: 'weather-time-machine-template', data:pastWeather}"></div>
+  </div>
+
 </div>
 
 

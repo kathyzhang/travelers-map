@@ -20,6 +20,7 @@ function geocodeAddress(placeType) {
         radius: 500,
         type: placeType,
       }, function(results, status) {
+        console.log(results);
         processResults(results, status, placeType);
       });
     } else {
@@ -79,6 +80,13 @@ function initMap() {
 
 
 function processResults(results, status, placeType) {
+  if (results.length == 0) {
+    _viewModel.errorMessage("No place found");
+  }
+  else {
+    _viewModel.errorMessage("");
+  }
+
   console.log(placeType + results.length);
   if (status === google.maps.places.PlacesServiceStatus.OK) {
     // TODO: Is ranking this way necessary?
@@ -230,7 +238,7 @@ function resultItemFilterFunction(place) {
 var ViewModel = function() {
   var self = this;
   self.inputAddress = ko.observable("Toronto, ON, Canada");
-  self.searchType = ko.observable("restaurant");
+  self.searchType = ko.observable('restaurant');
   self.resultItemList = ko.observableArray([]);
   self.resultItemFilterList = ko.observableArray([]);
   self.resultItemDisplayed = ko.observableArray([]);
@@ -244,7 +252,7 @@ var ViewModel = function() {
   self.openSearchWindow = ko.observable(true);
   self.openResultWindow = ko.observable(false);
   self.openWeatherWindow = ko.observable(false);
-
+  self.errorMessage = ko.observable();
 
   self.searchMap = function() {
     removeAllMarkers();
@@ -326,7 +334,6 @@ function updateInputAddressAndType() {
   }
   else {
     geocodeAddress(_viewModel.searchType());
-
   }
 
 }

@@ -65,8 +65,7 @@ html, body, #map, .container-fluid, .mapArea{
 
 .dropdown-menu, .dropdown-toggle, .dropdown {
   width: 100%;
-  white-space: normal;
-  padding: 0px;
+  padding: 5px;
   float: left;
 }
 
@@ -119,7 +118,7 @@ html, body, #map, .container-fluid, .mapArea{
 }
 
 .dropdown-menu>li>a {
-  padding: 0;
+  padding: 5;
 }
 
 .weather{
@@ -210,19 +209,19 @@ input[type='checkbox'] {
     left: 0;
     background-color: #F8F8FF;
     overflow-x: hidden;
-    padding-top: 60px;
+    padding: 20px;
 }
 
 @media only screen and (max-width: 768px) {
     .sidenav {
-        width: 100%;
+        width: 90%;
     }
 }
 
 .sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
-    font-size: 25px;
+    font-size: 15px;
     color: #F8F8FF;
     display: block;
 }
@@ -264,7 +263,9 @@ input[type='checkbox'] {
     }
 }
 
-
+.error-message {
+  color: red;
+}
 /*.btn-primary:hover {
     background-color:#efE0E0;
 }
