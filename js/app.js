@@ -260,6 +260,19 @@ function resultItemFilterFunction(place) {
 }
 
 
+function printPlaces() {
+  var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+  for (var i=0; i<_viewModel.savedPlaces().length; i++) {
+    WinPrint.document.write("<img src='" + _viewModel.savedPlaces()[i].icon() + "' height='15' width='15'>");
+    WinPrint.document.write("<span>" + _viewModel.savedPlaces()[i].name()  + "</span>");
+    WinPrint.document.write("<div> Address: " + _viewModel.savedPlaces()[i].address()  + "</div>");
+    WinPrint.document.write("<br>");
+  }
+  WinPrint.document.close();
+  WinPrint.focus();
+  WinPrint.print();
+}
+
 var ViewModel = function() {
   var self = this;
   self.inputAddress = ko.observable("Toronto, ON, Canada");

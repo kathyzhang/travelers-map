@@ -229,32 +229,9 @@
   <a href="javascript:void(0)" class="closebtn" onclick="closeSaved()">&times;</a>
   <br />
   <br />
-  <div>
-    <h4><span class = "glyphicon glyphicon-pushpin red" aria-hidden="true"></span>Places Selected</h4>
-    <div data-bind="with: placeSelected1">
-      <button data-bind="text: name"></button>
-    </div>
-    <div data-bind="with: placeSelected2">
-      <button data-bind="text: name"></button>
-    </div>
-    <h4 data-bind="text: routeResult"></h4>
-    <button class="btn-warning" data-bind="click: getRoute">Calculate Walking Time</button>
-  </div>
 
-  <hr />
-
-  <div class="error-message" data-bind="text: errorMessage">
-  </div>
-
-  <div id="floating-panel">
-    <form data-bind="submit: resultItemFilter">
-      <input id="pac-input" type="textbox" data-bind="value: searchInput" value="search input" width="250"/>
-      <button class="btn-info" type="submit">Filter</button>
-    </form>
-    <button class="btn-info" data-bind="click: cancelFilter">Cancel</button>
-  </div>
-
-  <button class="btn-info" data-bind="click: searchMap"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search Current Map Area </button>
+  <button class="btn-info" data-bind="click: printPlaces">Print</button>
+  <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
 
   <div class="resultArea" data-bind="template: { name: 'resultsItem-template', foreach: savedPlaces}"></div>
 </div>
