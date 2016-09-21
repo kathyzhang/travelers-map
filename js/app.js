@@ -175,7 +175,6 @@ function listItemClicked(place) {
 
 
 function openInfoWindow(place) {
-  console.log("in openInfoWindow");
   var marker = _markers[place.markerIndex()];
   toggleBounce(marker);
   infowindow.setContent(place.name());
@@ -434,7 +433,6 @@ function setMapOnAllMarkers(map) {
 
 
 function toggleSaveButton(item) {
-
   if (item.saved()) {
     item.saved(false);
     _viewModel.savedPlaces.remove(item);
@@ -443,7 +441,6 @@ function toggleSaveButton(item) {
     item.saved(true);
     _viewModel.savedPlaces.push(item);
   }
-  console.log(_viewModel.savedPlaces());
 }
 
 

@@ -24,7 +24,6 @@
       <div>
         <span class="inline site-name">
           <span class="glyphicon glyphicon-globe xlarger" aria-hidden="true"></span>
-          <h2>Traveler's Map</h2>
         </span>
       </div>
     </div>
@@ -265,14 +264,13 @@
 
 <script type="text/html" id="resultsItem-template">
   <div class="dropdown resultItem" data-bind="event: {mouseover:getPlaceDetials}, click: listItemClicked" draggable="true">
-    <button class="btn btn-default btn-s dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-      <div>
-        <img src="" alt="icon" data-bind="attr:{src:icon}" height="15" width="15">
-        <span data-bind="text: name"></span>
-        <span class="saveButton glyphicon glyphicon-bookmark" aria-hidden="true" data-bind="click: toggleSaveButton, css: {savedButton: saved}"></span>
-      </div>
+    <div class="btn btn-default btn-s dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      <img src="" alt="icon" data-bind="attr:{src:icon}" height="15" width="15">
+      <span data-bind="text: name"></span>
+      <span class="saveButton glyphicon glyphicon-bookmark" aria-hidden="true" data-bind="click: toggleSaveButton, css: {savedButton: saved}"></span>
+    </div>
 
-    </button>
+
     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
       <span>Hours:</span>
       <li data-bind="foreach: hours">
