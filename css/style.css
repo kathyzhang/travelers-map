@@ -56,9 +56,10 @@ html, body, #map, .container-fluid, .mapArea{
   margin: 10px;
 }
 
-.btn span.glyphicon {
+/*.btn span.glyphicon {
 	opacity: 0;
-}
+}*/
+
 .btn.active span.glyphicon {
 	opacity: 1;
 }
@@ -139,7 +140,7 @@ html, body, #map, .container-fluid, .mapArea{
   opacity: 1;
 }*/
 
-.inline * {
+.inline {
   display: inline-block;
 }
 
@@ -265,6 +266,20 @@ input[type='checkbox'] {
 
 .error-message {
   color: red;
+}
+
+.saveButton {
+  color: grey;
+  float: right;
+}
+
+.savedButton {
+  color: red;
+  float: right;
+}
+
+.saved-count {
+  font-weight: bold;
 }
 /*.btn-primary:hover {
     background-color:#efE0E0;

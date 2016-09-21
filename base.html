@@ -208,6 +208,7 @@
     <button class="btn-info" data-bind="click: cancelFilter">Cancel</button>
   </div>
 
+  <button class="btn-info" data-bind="click: searchMap"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search Current Map Area </button>
 
   <div class="resultArea" data-bind="template: { name: 'resultsItem-template', foreach: resultItemDisplayed}"></div>
 </div>
@@ -221,8 +222,43 @@
     <div class="weatherWidget text-center" data-bind="template: { name: 'weather-template', data:localWeather}"></div>
     <div class="weatherWidget text-center" data-bind="template: { name: 'weather-time-machine-template', data:pastWeather}"></div>
   </div>
-
 </div>
+
+<!-- Saved Places -->
+<div id="resultSidenav" class="sidenav" data-bind="style: { display: openSavedWindow() ? 'inline' : 'none' }">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeSaved()">&times;</a>
+  <br />
+  <br />
+  <div>
+    <h4><span class = "glyphicon glyphicon-pushpin red" aria-hidden="true"></span>Places Selected</h4>
+    <div data-bind="with: placeSelected1">
+      <button data-bind="text: name"></button>
+    </div>
+    <div data-bind="with: placeSelected2">
+      <button data-bind="text: name"></button>
+    </div>
+    <h4 data-bind="text: routeResult"></h4>
+    <button class="btn-warning" data-bind="click: getRoute">Calculate Walking Time</button>
+  </div>
+
+  <hr />
+
+  <div class="error-message" data-bind="text: errorMessage">
+  </div>
+
+  <div id="floating-panel">
+    <form data-bind="submit: resultItemFilter">
+      <input id="pac-input" type="textbox" data-bind="value: searchInput" value="search input" width="250"/>
+      <button class="btn-info" type="submit">Filter</button>
+    </form>
+    <button class="btn-info" data-bind="click: cancelFilter">Cancel</button>
+  </div>
+
+  <button class="btn-info" data-bind="click: searchMap"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search Current Map Area </button>
+
+  <div class="resultArea" data-bind="template: { name: 'resultsItem-template', foreach: savedPlaces}"></div>
+</div>
+
 
 
 <div class="row">
@@ -238,8 +274,9 @@
     <span>Weather</span>
     <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
   </div>
-  <div class="col-xs-3 btn btn-info navMenuItem">
-  <span>About</span>
+  <div class="col-xs-3 btn btn-info navMenuItem" onclick="openSaved()">
+  <span>Saved: </span>
+  <span class="saved-count" data-bind="text: savedPlaces().length"></span>
   </div>
 </div>
 
@@ -252,10 +289,12 @@
 <script type="text/html" id="resultsItem-template">
   <div class="dropdown resultItem" data-bind="event: {mouseover:getPlaceDetials}, click: listItemClicked" draggable="true">
     <button class="btn btn-default btn-s dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-      <span>
+      <div>
         <img src="" alt="icon" data-bind="attr:{src:icon}" height="15" width="15">
         <span data-bind="text: name"></span>
-      </span>
+        <span class="saveButton glyphicon glyphicon-bookmark" aria-hidden="true" data-bind="click: toggleSaveButton, css: {savedButton: saved}"></span>
+      </div>
+
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
       <span>Hours:</span>
@@ -277,7 +316,7 @@
       <h4 data-bind="text: timezone"></h4>
     </div>
     <p data-bind="text: description"></p>
-    <h4 class=" temperature-btn" data-bind="click: FahToCelToggle, text: localTempDisplay"></h4>
+    <h4 class="temperature-btn" data-bind="click: FahToCelToggle, text: localTempDisplay"></h4>
   </div>
   <div>
     <canvas class="weather-icon" data-bind="attr: {'id': weatherItemId}, event: {mouseover: animateSkycons, mouseout: stopAnimateSkycons}" width="50" height="50"></canvas>

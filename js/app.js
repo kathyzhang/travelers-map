@@ -161,6 +161,7 @@ function createMarker(place, placeType, timeout, ranking) {
     infowindow.setContent(place.name);
     infowindow.open(map, this);
     toggleBounce(marker);
+    console.log(place.geometry.location.toJSON());
   });
 
   return index;
@@ -206,29 +207,53 @@ function selectPlace(p) {
 
 
 function openSearch() {
+  closeAllSideWindows();
   _viewModel.openSearchWindow(true);
 }
+
 
 function closeSearch() {
   _viewModel.openSearchWindow(false);
 }
 
 function openResults() {
+  closeAllSideWindows();
   _viewModel.openResultWindow(true);
 }
+
 
 function closeResults() {
   _viewModel.openResultWindow(false);
 }
 
+
 function openWeather() {
+  closeAllSideWindows();
   _viewModel.openWeatherWindow(true);
 }
+
 
 function closeWeather() {
   _viewModel.openWeatherWindow(false);
 }
 
+
+function openSaved() {
+  closeAllSideWindows();
+  _viewModel.openSavedWindow(true);
+}
+
+function closeSaved() {
+  _viewModel.openSavedWindow(false);
+}
+
+
+function closeAllSideWindows() {
+  _viewModel.openSearchWindow(false);
+  _viewModel.openResultWindow(false);
+  _viewModel.openWeatherWindow(false);
+  _viewModel.openSavedWindow(false);
+}
 
 function resultItemFilterFunction(place) {
     return place.name().toLowerCase().includes(_viewModel.searchInput().toLowerCase());
@@ -252,7 +277,9 @@ var ViewModel = function() {
   self.openSearchWindow = ko.observable(true);
   self.openResultWindow = ko.observable(false);
   self.openWeatherWindow = ko.observable(false);
+  self.openSavedWindow = ko.observable(false);
   self.errorMessage = ko.observable();
+  self.savedPlaces = ko.observableArray();
 
   self.searchMap = function() {
     removeAllMarkers();
@@ -393,7 +420,18 @@ function setMapOnAllMarkers(map) {
 }
 
 
+function toggleSaveButton(item) {
 
+  if (item.saved()) {
+    item.saved(false);
+    _viewModel.savedPlaces.remove(item);
+  }
+  else {
+    item.saved(true);
+    _viewModel.savedPlaces.push(item);
+  }
+  console.log(_viewModel.savedPlaces());
+}
 
 
 var placeItem = function(data) {
@@ -406,6 +444,7 @@ var placeItem = function(data) {
   this.geometry = ko.observable(data.geometry);
   this.website = ko.observable(data.website);
   this.markerIndex = ko.observable();
+  this.saved = ko.observable(false);
 };
 
 
